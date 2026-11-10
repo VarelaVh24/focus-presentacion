@@ -1,0 +1,977 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Presentación FOCUS!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* Solo modo oscuro: colores de la colección "FOCUS / Color", modo Pizarra */
+:root {
+  --bg: #0f172a; --bg-deep: #0b1322; --surface: #1e293b; --muted: #273449; --border: #334155; --input: #3b4a61;
+  --text: #f1f5f9; --text-2: #cbd5e1; --text-3: #94a3b8;
+  --amber: #f59e0b; --amber-2: #fcc94a; --amber-3: #fcd34d; --amber-bg: #3a2a0a;
+  --green: #5ee0b0; --green-bg: #12463a;
+  --cyan: #5ccbfa; --cyan-bg: #233a5c;
+  --red: #fb8a8a; --red-bg: #4a1f24;
+  --violet: #c4b5fd; --violet-bg: #2e1a47;
+  --teal: #67e8f9;
+  --foqui-bg: #a9b8cc; --foqui-ring: #cbd5e1;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { background: var(--bg-deep); color: var(--text); font-family: Inter, "Segoe UI", system-ui, sans-serif; overflow: hidden; -webkit-font-smoothing: antialiased; }
+button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
+
+/* Fondo neón: rejilla, resplandores y partículas */
+#bgfx { position: fixed; inset: 0; overflow: hidden; pointer-events: none; }
+#bgfx .grid { position: absolute; inset: -40px; background-image: linear-gradient(rgba(92,203,250,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(92,203,250,.07) 1px, transparent 1px); background-size: 48px 48px; mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%); animation: drift 30s linear infinite; }
+#bgfx .glow { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .32; transition: background 1s, transform 1.2s; }
+#bgfx .g1 { width: 520px; height: 520px; left: -120px; top: -140px; background: var(--amber); }
+#bgfx .g2 { width: 560px; height: 560px; right: -160px; bottom: -200px; background: var(--cyan); }
+#bgfx .g3 { width: 380px; height: 380px; left: 45%; top: 55%; background: #7c3aed; opacity: .18; }
+#bgfx i { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: var(--amber-2); box-shadow: 0 0 8px var(--amber); opacity: .0; animation: float 9s linear infinite; }
+@keyframes drift { to { transform: translate(48px, 48px); } }
+@keyframes float { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: .8; } 100% { transform: translateY(-260px); opacity: 0; } }
+
+/* Escenario 16:9 */
+#viewport { position: fixed; inset: 0; display: grid; place-items: center; }
+#stage { width: 1280px; height: 720px; position: relative; transform-origin: center; flex: none; }
+.slide { position: absolute; inset: 0; padding: 52px 72px 88px; display: flex; flex-direction: column; opacity: 0; visibility: hidden; transform: scale(.97) translateY(14px); filter: blur(6px); transition: opacity .55s ease, transform .55s ease, filter .55s ease, visibility .55s; }
+.slide.active { opacity: 1; visibility: visible; transform: none; filter: none; }
+
+/* Tipografía neón */
+.eyebrow { font-size: 13px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--c, var(--amber-2)); text-shadow: 0 0 10px var(--c, var(--amber)); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+.eyebrow::before { content: ""; width: 26px; height: 2px; background: currentColor; box-shadow: 0 0 8px currentColor; }
+h1 { font-size: 104px; font-weight: 900; letter-spacing: -.045em; line-height: .95; }
+h2 { font-size: 44px; font-weight: 800; letter-spacing: -.025em; line-height: 1.1; margin-bottom: 26px; max-width: 1080px; }
+h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+p, li { font-size: 18px; line-height: 1.5; color: var(--text-2); }
+.neon { color: var(--amber-2); text-shadow: 0 0 6px rgba(252,201,74,.9), 0 0 22px rgba(245,158,11,.7), 0 0 48px rgba(245,158,11,.35); }
+.neon-c { color: var(--cyan); text-shadow: 0 0 6px rgba(92,203,250,.9), 0 0 22px rgba(92,203,250,.55); }
+.neon-g { color: var(--green); text-shadow: 0 0 6px rgba(94,224,176,.9), 0 0 22px rgba(94,224,176,.5); }
+.flicker { animation: flicker 6s infinite; }
+@keyframes flicker { 0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; } 20%, 24%, 55% { opacity: .55; } }
+
+/* Tarjetas con borde de neón */
+.card { --c: var(--amber); position: relative; background: linear-gradient(160deg, rgba(39,52,73,.72), rgba(30,41,59,.55)); border: 1px solid color-mix(in srgb, var(--c) 38%, transparent); border-radius: 20px; padding: 22px 24px; box-shadow: 0 0 0 1px rgba(255,255,255,.02) inset, 0 0 22px color-mix(in srgb, var(--c) 14%, transparent), 0 10px 30px rgba(0,0,0,.35); backdrop-filter: blur(6px); transition: border-color .25s, box-shadow .25s, transform .25s; }
+.card.hov:hover, .card.on { border-color: var(--c); box-shadow: 0 0 0 1px color-mix(in srgb, var(--c) 40%, transparent) inset, 0 0 30px color-mix(in srgb, var(--c) 35%, transparent), 0 10px 30px rgba(0,0,0,.35); transform: translateY(-3px); }
+.c-amber { --c: var(--amber); } .c-cyan { --c: var(--cyan); } .c-green { --c: var(--green); } .c-violet { --c: var(--violet); } .c-red { --c: var(--red); } .c-teal { --c: var(--teal); }
+.chip { --c: var(--amber); display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: color-mix(in srgb, var(--c) 12%, transparent); border: 1px solid color-mix(in srgb, var(--c) 45%, transparent); color: var(--c); font-size: 15px; font-weight: 700; white-space: nowrap; box-shadow: 0 0 12px color-mix(in srgb, var(--c) 18%, transparent); }
+.ico { --c: var(--amber); width: 50px; height: 50px; border-radius: 15px; display: grid; place-items: center; color: var(--c); background: color-mix(in srgb, var(--c) 12%, transparent); border: 1px solid color-mix(in srgb, var(--c) 45%, transparent); box-shadow: 0 0 16px color-mix(in srgb, var(--c) 30%, transparent); margin-bottom: 14px; flex: none; }
+.ico svg { width: 26px; height: 26px; filter: drop-shadow(0 0 4px currentColor); }
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border-radius: 14px; background: var(--amber); color: #0f172a; font-weight: 800; font-size: 16px; box-shadow: 0 0 18px rgba(245,158,11,.55), 0 0 42px rgba(245,158,11,.25); transition: transform .15s, box-shadow .15s; }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 0 26px rgba(245,158,11,.75), 0 0 60px rgba(245,158,11,.35); }
+.btn.line { background: transparent; color: var(--cyan); border: 1px solid var(--cyan); box-shadow: 0 0 14px rgba(92,203,250,.35); }
+.src { font-size: 12.5px; color: var(--text-3); }
+.grid { display: grid; gap: 18px; }
+
+/* 1 · Portada */
+.cover { flex-direction: row; align-items: center; justify-content: center; gap: 40px; padding-bottom: 60px; }
+.cover .tag { font-size: 32px; font-weight: 700; color: var(--text-2); margin: 20px 0 30px; }
+.cover .what { font-size: 20px; max-width: 560px; color: var(--text-2); }
+.cover .meta { display: flex; gap: 26px; flex-wrap: wrap; font-size: 14px; color: var(--text-3); }
+.cover .meta b { display: block; color: var(--text); font-size: 15px; margin-top: 2px; }
+.hero { width: 450px; height: 450px; flex: none; position: relative; display: grid; place-items: center; }
+.hero .ring { position: absolute; border-radius: 50%; border: 2px solid var(--amber); box-shadow: 0 0 20px var(--amber), inset 0 0 20px rgba(245,158,11,.4); opacity: .55; animation: pulse 4s ease-in-out infinite; }
+.hero .r1 { inset: 30px; } .hero .r2 { inset: 0; border-color: var(--cyan); box-shadow: 0 0 20px var(--cyan), inset 0 0 20px rgba(92,203,250,.3); animation-delay: -2s; opacity: .3; }
+.hero .foqui { width: 300px; height: 300px; cursor: pointer; }
+@keyframes pulse { 0%, 100% { transform: scale(1); opacity: .55; } 50% { transform: scale(1.04); opacity: .25; } }
+.hint { position: absolute; left: 72px; bottom: 84px; font-size: 13px; color: var(--text-3); display: flex; gap: 10px; align-items: center; }
+kbd { font-family: inherit; font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 6px; border: 1px solid var(--input); color: var(--text-2); }
+
+/* 2 · Qué es */
+.what-grid { grid-template-columns: 1.05fr 1fr; gap: 28px; flex: 1; align-items: start; }
+.def { font-size: 26px; line-height: 1.45; color: var(--text); font-weight: 600; }
+.def em { font-style: normal; color: var(--amber-2); text-shadow: 0 0 14px rgba(245,158,11,.6); }
+.pillars { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 24px; }
+.comp { grid-template-columns: 1fr 1fr; gap: 14px; }
+.comp .card { padding: 18px 20px; cursor: default; }
+.comp .card p { font-size: 15px; }
+.comp .card h3 { font-size: 18px; margin-bottom: 4px; }
+
+/* 3 · Problema */
+.quote { font-size: 32px; font-weight: 700; line-height: 1.3; color: var(--text); max-width: 1060px; margin-bottom: 22px; letter-spacing: -.01em; }
+.mech { display: flex; gap: 10px; flex-wrap: wrap; }
+.mech .chip { cursor: pointer; transition: transform .2s, box-shadow .2s; }
+.mech .chip.on { transform: translateY(-2px); box-shadow: 0 0 22px color-mix(in srgb, var(--c) 55%, transparent); background: color-mix(in srgb, var(--c) 22%, transparent); }
+.tabs { display: inline-flex; align-self: flex-start; padding: 5px; border-radius: 14px; background: rgba(15,23,42,.7); border: 1px solid var(--border); gap: 4px; margin: 24px 0 16px; }
+.tabs button { padding: 10px 20px; border-radius: 10px; font-size: 15px; font-weight: 700; color: var(--text-3); transition: background .2s, color .2s, box-shadow .2s; }
+.tabs button.on { background: var(--amber); color: #0f172a; box-shadow: 0 0 16px rgba(245,158,11,.6); }
+.tabpanel { display: none; grid-template-columns: repeat(3, 1fr); gap: 18px; max-width: 1040px; }
+.tabpanel.on { display: grid; }
+.tabpanel.on .card { animation: up .45s ease both; }
+.tabpanel.on .card:nth-child(2) { animation-delay: .08s; } .tabpanel.on .card:nth-child(3) { animation-delay: .16s; }
+.tabpanel .card p { font-size: 16px; }
+@keyframes up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* 4 · Impacto */
+.stats { grid-template-columns: repeat(4, 1fr); }
+.stat { text-align: left; }
+.stat .num { font-size: 50px; font-weight: 900; letter-spacing: -.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+.stat .num small { font-size: 24px; font-weight: 800; margin-left: 2px; }
+.stat p { font-size: 15px; margin-top: 10px; }
+.lower { grid-template-columns: 1.25fr 1fr; margin-top: 18px; max-width: 1060px; }
+.bar { display: grid; grid-template-columns: 150px 1fr 60px; gap: 14px; align-items: center; font-size: 15px; color: var(--text-2); margin: 9px 0; }
+.bar .t { height: 10px; border-radius: 99px; background: var(--muted); overflow: hidden; }
+.bar .f { height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, var(--amber), var(--amber-2)); box-shadow: 0 0 12px var(--amber); transition: width 1.2s cubic-bezier(.2,.8,.2,1); }
+.bar b { text-align: right; color: var(--text); }
+.hours .big { font-size: 66px; font-weight: 900; letter-spacing: -.03em; line-height: 1; }
+.hours p { font-size: 16px; margin-top: 8px; }
+
+/* 5 · Objetivo */
+.goal { font-size: 30px; font-weight: 700; line-height: 1.35; max-width: 1060px; margin-bottom: 26px; }
+.flips { grid-template-columns: repeat(3, 1fr); height: 290px; }
+.flip { perspective: 1200px; cursor: pointer; outline: none; }
+.flip-in { position: relative; width: 100%; height: 100%; transition: transform .7s cubic-bezier(.2,.8,.2,1); transform-style: preserve-3d; }
+.flip.open .flip-in { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; }
+.face.back { transform: rotateY(180deg); }
+.face .n { font-size: 13px; font-weight: 800; color: var(--text-3); letter-spacing: .1em; margin-bottom: 4px; }
+.face h3 { font-size: 24px; }
+.face p { font-size: 16px; }
+.face .more { margin-top: auto; font-size: 13px; font-weight: 700; color: var(--c); }
+.face .big { font-size: 48px; font-weight: 900; letter-spacing: -.03em; margin: 4px 0; color: var(--c); text-shadow: 0 0 18px var(--c); }
+.exit { margin-top: 20px; display: flex; gap: 14px; align-items: center; font-size: 16px; color: var(--text-2); max-width: 980px; }
+
+/* 6 · Cómo funciona (teléfono interactivo) */
+.how { display: grid; grid-template-columns: 300px 1fr; gap: 40px; flex: 1; min-height: 0; max-width: 1060px; margin-top: -8px; }
+.how .phonecol { order: -1; }
+.steps { display: grid; gap: 12px; align-content: start; }
+.steps .card { display: flex; gap: 16px; align-items: flex-start; padding: 16px 18px; }
+.steps .card .ico { margin: 0; width: 42px; height: 42px; border-radius: 12px; }
+.steps .card .ico svg { width: 22px; height: 22px; }
+.steps h3 { font-size: 17px; margin-bottom: 2px; }
+.steps p { font-size: 14.5px; line-height: 1.45; }
+.modes { display: flex; gap: 8px; margin-bottom: 12px; }
+.modes button { flex: 1; padding: 8px 6px; border-radius: 10px; font-size: 12.5px; font-weight: 700; color: var(--text-3); border: 1px solid var(--border); transition: all .2s; }
+.modes button.on { color: #0f172a; background: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 14px rgba(92,203,250,.6); }
+.phone { width: 300px; height: 432px; border-radius: 40px; padding: 12px; background: #0b1322; border: 2px solid var(--cyan); box-shadow: 0 0 24px rgba(92,203,250,.5), inset 0 0 18px rgba(92,203,250,.2); position: relative; }
+.phone .scr { position: absolute; inset: 12px; border-radius: 30px; overflow: hidden; background: radial-gradient(circle at 30% 10%, #233a5c, #0f172a 70%); }
+.phone .notch { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 76px; height: 18px; border-radius: 10px; background: #000; z-index: 3; }
+.home { padding: 52px 18px 18px; }
+.home .clock { text-align: center; font-size: 42px; font-weight: 800; letter-spacing: -.02em; }
+.home .date { text-align: center; font-size: 12px; color: var(--text-3); margin-bottom: 22px; }
+.apps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px 10px; }
+.app { display: grid; justify-items: center; gap: 5px; font-size: 10px; color: var(--text-2); }
+.app i { width: 50px; height: 50px; border-radius: 15px; display: grid; place-items: center; font-style: normal; font-weight: 900; font-size: 18px; color: #fff; transition: transform .15s; }
+.app:hover i { transform: scale(1.08); }
+.tap { position: absolute; left: 0; right: 0; bottom: 20px; text-align: center; font-size: 12px; color: var(--cyan); text-shadow: 0 0 8px var(--cyan); animation: flicker 3s infinite; }
+.ov { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 30px 20px; gap: 12px; background: rgba(11,19,34,.82); backdrop-filter: blur(10px); opacity: 0; pointer-events: none; transition: opacity .35s; }
+.ov.on { opacity: 1; pointer-events: auto; }
+.ov .appbg { position: absolute; inset: 0; z-index: -1; filter: blur(4px); opacity: .5; }
+.ov h4 { font-size: 19px; font-weight: 800; }
+.ov p { font-size: 13px; color: var(--text-2); line-height: 1.4; }
+.ov .ring { width: 108px; height: 108px; position: relative; }
+.ov .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ov .ring b { position: absolute; inset: 0; display: grid; place-items: center; font-size: 34px; font-weight: 900; color: var(--amber-2); text-shadow: 0 0 12px var(--amber); }
+.ov .acts { display: grid; gap: 8px; width: 100%; margin-top: 6px; }
+.ov .acts button { padding: 11px; border-radius: 12px; font-size: 13.5px; font-weight: 800; }
+.ov .a1 { background: var(--amber); color: #0f172a; box-shadow: 0 0 14px rgba(245,158,11,.55); }
+.ov .a2 { border: 1px solid var(--input); color: var(--text-2); }
+.ov .a2:disabled { opacity: .35; cursor: not-allowed; }
+.ov .sounds { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.ov .sounds span { font-size: 11px; padding: 5px 9px; border-radius: 99px; border: 1px solid var(--border); color: var(--text-2); }
+.ov .sounds span.on { border-color: var(--green); color: var(--green); box-shadow: 0 0 10px rgba(94,224,176,.4); }
+.ov .timer { font-size: 40px; font-weight: 900; color: var(--green); text-shadow: 0 0 14px var(--green); font-variant-numeric: tabular-nums; }
+.opened { position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; font-size: 22px; font-weight: 900; color: #fff; opacity: 0; transition: opacity .3s; pointer-events: none; }
+.opened.on { opacity: 1; pointer-events: auto; cursor: pointer; }
+.opened small { display: block; font-size: 11px; font-weight: 600; opacity: .8; margin-top: 6px; text-align: center; }
+
+/* 7 · Datos */
+.pipe { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-top: 4px; }
+.pipe .line { position: absolute; left: 6%; right: 6%; top: 44px; height: 2px; background: linear-gradient(90deg, var(--amber), var(--cyan)); box-shadow: 0 0 10px var(--cyan); opacity: .55; }
+.pipe .pk { position: absolute; top: 38px; left: 6%; width: 14px; height: 14px; border-radius: 4px; background: var(--amber-2); box-shadow: 0 0 14px var(--amber), 0 0 28px var(--amber); opacity: 0; z-index: 2; }
+.pipe.run .pk { animation: travel 2.6s cubic-bezier(.5,0,.3,1) forwards; }
+.pipe.run .pk:nth-of-type(2) { animation-delay: .25s; } .pipe.run .pk:nth-of-type(3) { animation-delay: .5s; }
+@keyframes travel { 0% { left: 6%; opacity: 0; } 8% { opacity: 1; } 92% { opacity: 1; } 100% { left: 92%; opacity: 0; } }
+.node2 { position: relative; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.node2 .dot { width: 88px; height: 88px; border-radius: 26px; display: grid; place-items: center; background: #0b1322; border: 2px solid var(--c); color: var(--c); box-shadow: 0 0 18px color-mix(in srgb, var(--c) 45%, transparent), inset 0 0 14px color-mix(in srgb, var(--c) 25%, transparent); margin-bottom: 14px; transition: transform .3s, box-shadow .3s; }
+.node2 .dot svg { width: 38px; height: 38px; filter: drop-shadow(0 0 5px currentColor); }
+.node2.lit .dot { transform: scale(1.1); box-shadow: 0 0 34px var(--c), inset 0 0 18px color-mix(in srgb, var(--c) 40%, transparent); }
+.node2 h3 { font-size: 16px; margin-bottom: 4px; }
+.node2 p { font-size: 13.5px; line-height: 1.45; }
+.data-lower { grid-template-columns: 1fr 1fr auto; margin-top: 24px; align-items: stretch; max-width: 1060px; }
+.data-lower ul { list-style: none; display: grid; gap: 8px; }
+.data-lower li { font-size: 15px; padding-left: 26px; position: relative; }
+.data-lower .yes li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 900; text-shadow: 0 0 8px var(--green); }
+.data-lower .no li::before { content: "✕"; position: absolute; left: 0; color: var(--red); font-weight: 900; text-shadow: 0 0 8px var(--red); }
+.data-lower .go { display: flex; flex-direction: column; justify-content: center; gap: 10px; min-width: 210px; }
+
+/* 8 · Estructura */
+.arch { flex: 1; display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px; min-height: 0; max-width: 1080px; }
+.diagram { padding: 0; overflow: hidden; }
+.diagram svg.lines { position: absolute; inset: 0; width: 100%; height: 100%; }
+.flow { stroke-dasharray: 6 8; animation: dash 1.2s linear infinite; }
+@keyframes dash { to { stroke-dashoffset: -28; } }
+.node { --c: var(--amber); position: absolute; width: 176px; padding: 12px 14px; border-radius: 14px; background: #0f172a; border: 1.5px solid color-mix(in srgb, var(--c) 55%, transparent); text-align: left; transition: box-shadow .2s, transform .2s, border-color .2s; box-shadow: 0 0 12px color-mix(in srgb, var(--c) 20%, transparent); }
+.node:hover { transform: translateY(-2px); }
+.node.on { border-color: var(--c); box-shadow: 0 0 26px color-mix(in srgb, var(--c) 55%, transparent), inset 0 0 12px color-mix(in srgb, var(--c) 18%, transparent); }
+.node b { display: block; font-size: 15px; color: var(--c); }
+.node span { font-size: 12.5px; color: var(--text-3); }
+.node.small { width: 150px; padding: 9px 12px; border-style: dashed; }
+.node.small b { font-size: 13.5px; }
+.cloud { position: absolute; right: 18px; top: 14px; font-size: 11px; font-weight: 800; letter-spacing: .14em; color: var(--cyan); text-shadow: 0 0 8px var(--cyan); }
+.detail h3 { font-size: 24px; color: var(--c); text-shadow: 0 0 12px color-mix(in srgb, var(--c) 60%, transparent); }
+.detail .sub { font-size: 14px; font-weight: 600; color: var(--text-3); margin-bottom: 14px; }
+.detail ul { list-style: none; display: grid; gap: 10px; }
+.detail li { font-size: 16px; padding-left: 20px; position: relative; }
+.detail li::before { content: ""; position: absolute; left: 2px; top: 9px; width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); }
+.key { margin-top: 16px; padding: 14px 16px; border-radius: 14px; border: 1px solid rgba(92,203,250,.4); background: rgba(35,58,92,.45); font-size: 14.5px; line-height: 1.45; color: var(--text-2); }
+.key b { color: var(--cyan); }
+
+/* 9 · Riesgo */
+.risk { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; min-height: 0; max-width: 1050px; }
+.sliders { display: grid; gap: 10px; align-content: start; }
+.sl label { display: flex; justify-content: space-between; font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.sl label span { color: var(--amber-2); font-variant-numeric: tabular-nums; text-shadow: 0 0 8px rgba(245,158,11,.6); }
+.sl small { display: block; font-size: 12.5px; color: var(--text-3); margin-top: 4px; }
+input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; border-radius: 99px; background: var(--muted); outline: none; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--amber-2); border: 3px solid #0f172a; box-shadow: 0 0 12px var(--amber); cursor: pointer; }
+input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--amber-2); border: 3px solid #0f172a; box-shadow: 0 0 12px var(--amber); cursor: pointer; }
+.reset { font-size: 13px; font-weight: 700; color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; justify-self: start; margin-top: 2px; }
+.gauge-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.gauge { width: 320px; height: 186px; overflow: visible; }
+.level { font-size: 34px; font-weight: 900; letter-spacing: -.02em; transition: color .3s, text-shadow .3s; }
+.prob { font-size: 14px; color: var(--text-3); margin-top: 2px; font-variant-numeric: tabular-nums; }
+.metrics { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 16px; }
+.metrics .chip { font-size: 13px; padding: 6px 12px; }
+.warn { margin-top: 12px; font-size: 12.5px; color: var(--text-3); max-width: 420px; }
+
+/* 10 · Confianza */
+.trust { grid-template-columns: repeat(3, 1fr); max-width: 1060px; }
+.trust .card { padding: 20px 22px; }
+.trust .card p { font-size: 15px; }
+
+/* 11 · Cierre */
+.close { display: grid; grid-template-columns: 1.15fr 1fr; gap: 26px; flex: 1; min-height: 0; }
+.road { display: grid; gap: 12px; align-content: start; position: relative; padding-left: 26px; }
+.road::before { content: ""; position: absolute; left: 8px; top: 10px; bottom: 10px; width: 2px; background: linear-gradient(var(--amber), var(--cyan)); box-shadow: 0 0 10px var(--amber); }
+.road .card { padding: 14px 18px; }
+.road .card::before { content: ""; position: absolute; left: -24px; top: 50%; width: 12px; height: 12px; margin-top: -6px; border-radius: 50%; background: #0f172a; border: 2px solid var(--c); box-shadow: 0 0 10px var(--c); }
+.road .card p { font-size: 15px; color: var(--text); }
+.status { display: flex; gap: 10px; align-items: center; font-size: 14px; color: var(--green); font-weight: 700; margin-bottom: 4px; text-shadow: 0 0 8px rgba(94,224,176,.5); }
+.status::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); animation: pulse 2s infinite; }
+.end { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.end .foqui { width: 180px; height: 180px; cursor: pointer; }
+.end h3 { font-size: 46px; font-weight: 900; margin-top: 8px; }
+.end p { font-size: 16px; max-width: 400px; margin-top: 6px; }
+.end .url { margin-top: 14px; font-size: 13px; color: var(--cyan); word-break: break-all; }
+
+/* Foqui */
+.foqui { overflow: visible; filter: drop-shadow(0 0 1.5px rgba(203,213,225,.9)) drop-shadow(0 0 10px rgba(245,158,11,.55)); }
+.foqui .eye { transform-box: view-box; transform-origin: 60px 56px; animation: blink 5s infinite; }
+@keyframes fqEnter { 0% { transform: translateY(80px) scale(.2) rotate(-20deg); opacity: 0; } 55% { transform: translateY(-18px) scale(1.08) rotate(6deg); opacity: 1; } 75% { transform: translateY(4px) scale(.97) rotate(-2deg); } 100% { transform: none; } }
+.fq-enter { animation: fqEnter .9s cubic-bezier(.2,.8,.2,1) both, bob 3.4s ease-in-out .9s infinite; }
+@keyframes blink { 0%, 94%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+@keyframes bob { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-10px) rotate(2deg); } }
+.bob { animation: bob 3.4s ease-in-out infinite; }
+@keyframes hop { 0% { transform: translateY(0) scale(1); } 30% { transform: translateY(-22px) scale(1.05, .95); } 60% { transform: translateY(0) scale(.95, 1.05); } 100% { transform: none; } }
+.hop { animation: hop .55s ease-out; }
+@keyframes shake { 0%, 100% { transform: none; } 25% { transform: translateX(-5px) rotate(-4deg); } 75% { transform: translateX(5px) rotate(4deg); } }
+.shake { animation: shake .4s ease-in-out 2; }
+
+#buddy { position: absolute; right: 26px; bottom: 76px; display: flex; align-items: flex-end; gap: 8px; z-index: 5; transition: opacity .4s, transform .4s; }
+#buddy.hidden { opacity: 0; pointer-events: none; transform: translateY(20px) scale(.9); }
+#buddy .wrap { width: 96px; height: 96px; }
+#buddy .foqui { width: 96px; height: 96px; cursor: pointer; display: block; }
+#bubble { max-width: 290px; padding: 12px 16px; border-radius: 16px 16px 4px 16px; background: rgba(15,23,42,.94); border: 1px solid var(--amber); color: var(--text); box-shadow: 0 0 18px rgba(245,158,11,.45); font-size: 14px; line-height: 1.45; font-weight: 600; margin-bottom: 58px; opacity: 0; transform: translateY(6px) scale(.96); transform-origin: bottom right; transition: opacity .25s, transform .25s; pointer-events: none; }
+#bubble.show { opacity: 1; transform: none; }
+
+/* Barra inferior */
+#bar { position: absolute; left: 0; right: 0; bottom: 0; height: 60px; padding: 0 28px; display: flex; align-items: center; gap: 16px; z-index: 6; }
+#bar .logo { font-weight: 900; font-size: 15px; letter-spacing: -.01em; }
+#dots { display: flex; gap: 7px; margin: 0 auto; }
+#dots button { width: 8px; height: 8px; border-radius: 99px; background: var(--input); transition: width .3s, background .3s, box-shadow .3s; padding: 0; }
+#dots button.on { width: 30px; background: var(--amber); box-shadow: 0 0 10px var(--amber); }
+.ctrl { display: flex; gap: 8px; align-items: center; }
+.ctrl button { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; border: 1px solid var(--border); color: var(--text-2); background: rgba(15,23,42,.6); transition: border-color .2s, color .2s, box-shadow .2s; }
+.ctrl button:hover { color: var(--amber-2); border-color: var(--amber); box-shadow: 0 0 12px rgba(245,158,11,.5); }
+.ctrl svg { width: 18px; height: 18px; }
+#count { font-size: 13px; font-weight: 700; color: var(--text-3); font-variant-numeric: tabular-nums; min-width: 48px; text-align: center; }
+#progress { position: absolute; left: 0; top: 0; height: 3px; background: linear-gradient(90deg, var(--amber), var(--amber-2)); box-shadow: 0 0 12px var(--amber); transition: width .5s ease; z-index: 7; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+}
+</style>
+</head>
+<body>
+<div id="bgfx"><div class="grid"></div><div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div></div>
+<div id="viewport">
+<div id="stage">
+  <div id="progress"></div>
+
+  <!-- 1 · Portada -->
+  <section class="slide cover" data-foqui="tranquilo" data-glow="amber">
+    <div>
+      <div class="eyebrow">Universidad Autónoma de Querétaro · Facultad de Informática</div>
+      <h1 class="neon flicker">FOCUS!</h1>
+      <div class="tag">Menos pantalla, <span class="neon-c">más enfoque.</span></div>
+      <p class="what">Un sistema de bienestar digital que ayuda a reducir poco a poco el tiempo en pantalla, con la compañía de su mascota, Foqui.</p>
+    </div>
+    <div class="hero">
+      <div class="ring r2"></div><div class="ring r1"></div>
+      <div class="bob" id="heroWrap"><svg class="foqui" id="heroFoqui" data-expr="tranquilo" viewBox="0 0 120 120" role="button" aria-label="Foqui"></svg></div>
+    </div>
+  </section>
+
+  <!-- 2 · Qué es -->
+  <section class="slide" data-foqui="tranquilo" data-glow="cyan" data-say="¡Hola! Soy Foqui. No vengo a regañar: vengo a acompañarte para que tú decidas cómo usar tu teléfono.">
+    <div class="eyebrow">01 · De qué trata</div>
+    <h2>¿Qué es <span class="neon">FOCUS!</span>?</h2>
+    <div class="grid what-grid">
+      <div>
+        <p class="def">Un sistema de bienestar digital que ayuda a <em>reducir de manera gradual</em> el tiempo en pantalla mediante <em>fricción reflexiva</em>, <em>límites que la propia persona elige</em> y el acompañamiento de una mascota, <em>Foqui</em>.</p>
+        <div class="pillars">
+          <span class="chip">⏸ Pausa consciente</span>
+          <span class="chip c-cyan" style="--c:var(--cyan)">🎯 Límites propios</span>
+          <span class="chip" style="--c:var(--green)">📉 Reducción gradual</span>
+          <span class="chip" style="--c:var(--violet)">🤖 Acompañamiento</span>
+        </div>
+      </div>
+      <div class="grid comp">
+        <div class="card hov c-amber"><div class="ico" style="--c:var(--amber)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></div><h3>App Android</h3><p>Mide el uso y aplica las pausas y límites en el teléfono.</p></div>
+        <div class="card hov c-cyan"><div class="ico" style="--c:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 18a5 5 0 1 1 .9-9.9A6 6 0 0 1 19 10a4 4 0 0 1-1 7.9z"/></svg></div><h3>API en la nube</h3><p>Guarda los datos y calcula el resumen y el riesgo.</p></div>
+        <div class="card hov c-green"><div class="ico" style="--c:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg></div><h3>Portal web</h3><p>Muestra las mismas cifras desde cualquier navegador.</p></div>
+        <div class="card hov c-violet"><div class="ico" style="--c:var(--violet)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></div><h3>Base de datos</h3><p>Azure SQL en la nube de Microsoft.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · El problema -->
+  <section class="slide" data-foqui="serio" data-glow="red" data-say="Toca cada mecanismo. Las apps compiten por tu atención con trucos muy bien conocidos.">
+    <div class="eyebrow" style="--c:var(--red)">02 · El problema</div>
+    <p class="quote">El problema no es el teléfono, sino el uso que <span class="neon">deja de ser una decisión</span>: abrir una app por inercia y notar media hora después que el tiempo ya pasó.</p>
+    <div class="mech" id="mech">
+      <span class="chip" style="--c:var(--red)" data-m="Las plataformas incorporan a propósito la recompensa variable del scroll infinito en su diseño.">↻ Scroll infinito</span>
+      <span class="chip" style="--c:var(--red)" data-m="Los videos personalizados activan con más intensidad zonas del cerebro ligadas a la recompensa.">🎲 Recompensas variables</span>
+      <span class="chip" style="--c:var(--red)" data-m="Es uno de los mecanismos con los que las apps compiten por el tiempo de atención.">▶ Reproducción automática</span>
+      <span class="chip" style="--c:var(--red)" data-m="Los juegos competitivos incorporan bucles de progreso de forma deliberada en su diseño.">🔥 Rachas</span>
+      <span class="chip" style="--c:var(--red)" data-m="Alternar entre tareas tiene un costo medible: más estrés, frustración y presión de tiempo.">🔔 Notificaciones</span>
+    </div>
+    <div class="tabs" role="tablist">
+      <button class="on" data-tab="ninos">Infancias y adolescencia</button>
+      <button data-tab="adultos">Personas adultas</button>
+    </div>
+    <div class="tabpanel on" id="ninos">
+      <div class="card hov c-red"><h3>Recompensa</h3><p>Recibir muchos likes y ver videos personalizados activa el circuito de recompensa del cerebro.</p></div>
+      <div class="card hov c-red"><h3>Sueño</h3><p>Más pantalla se asocia con dormir más tarde y menos; la luz antes de dormir suprime la melatonina.</p></div>
+      <div class="card hov c-red"><h3>Movimiento</h3><p>El tiempo en el teléfono se resta de actividad física, juego al aire libre y sueño.</p></div>
+    </div>
+    <div class="tabpanel" id="adultos">
+      <div class="card hov c-red"><h3>Fragmentación</h3><p>Saltar entre WhatsApp, Slack y redes tiene un costo: más estrés, frustración y presión de tiempo.</p></div>
+      <div class="card hov c-red"><h3>Desvelo</h3><p>No irse a la cama a la hora prevista para “recuperar” por la noche el tiempo propio.</p></div>
+      <div class="card hov c-red"><h3>Agotamiento</h3><p>El descanso insuficiente y la jornada fragmentada alimentan el burnout.</p></div>
+    </div>
+  </section>
+
+  <!-- 4 · Impacto social -->
+  <section class="slide" data-foqui="serio" data-glow="cyan" data-say="Mensajería, redes y video son lo que más se usa, y coinciden con las apps que FOCUS! permite vigilar.">
+    <div class="eyebrow" style="--c:var(--cyan)">03 · Impacto social · México</div>
+    <h2>Un problema de escala nacional</h2>
+    <div class="grid stats">
+      <div class="card hov c-amber stat"><div class="num neon" data-count="104.9" data-dec="1" data-suf=" M">0</div><p>personas usan internet en México (86.1 % de la población de 6 años y más)</p></div>
+      <div class="card hov c-cyan stat"><div class="num neon-c" data-count="97.3" data-dec="1" data-suf=" %">0</div><p>de quienes usan internet se conectan desde un smartphone</p></div>
+      <div class="card hov c-green stat"><div class="num neon-g" data-count="97.6" data-dec="1" data-suf=" %">0</div><p>de las personas de 15 a 24 años usan internet, el grupo con mayor uso</p></div>
+      <div class="card hov c-violet stat"><div class="num" style="color:var(--violet);text-shadow:0 0 18px var(--violet)" data-count="78.3" data-dec="1" data-suf=" %">0</div><p>de los hogares tienen internet</p></div>
+    </div>
+    <div class="grid lower">
+      <div class="card c-amber">
+        <h3 style="font-size:15px; color:var(--text-3)">Qué hacen en el smartphone</h3>
+        <div class="bar"><span>Mensajería</span><div class="t"><div class="f" data-w="90.6"></div></div><b>90.6 %</b></div>
+        <div class="bar"><span>Redes sociales</span><div class="t"><div class="f" data-w="80.4"></div></div><b>80.4 %</b></div>
+        <div class="bar"><span>Audio y video</span><div class="t"><div class="f" data-w="77.8"></div></div><b>77.8 %</b></div>
+        <div class="bar"><span>Juegos</span><div class="t"><div class="f" data-w="33.3"></div></div><b>33.3 %</b></div>
+      </div>
+      <div class="card c-cyan hours">
+        <div class="big neon-c">≈ 6 h</div>
+        <p>al día conectados; 55 % pasa más de 5 h y 24 % más de 9 h.</p>
+        <p class="src" style="margin-top:12px">Asociación de Internet MX, 2026. La ENDUTIH no mide horas de conexión.</p>
+      </div>
+    </div>
+    <p class="src" style="margin-top:12px">Fuente: INEGI, ENDUTIH 2025 · muestra de 65 057 viviendas.</p>
+  </section>
+
+  <!-- 5 · Objetivo -->
+  <section class="slide" data-foqui="tranquilo" data-glow="amber" data-say="Toca cada tarjeta. Y tranquilo: el bloqueo siempre tiene salida.">
+    <div class="eyebrow">04 · Objetivo</div>
+    <p class="goal">Que cada persona pueda decidir <span class="neon">cuánto, cuándo y para qué</span> usa su teléfono. FOCUS! no prohíbe: <span class="neon-c">acompaña, no castiga.</span></p>
+    <div class="grid flips">
+      <div class="flip" tabindex="0"><div class="flip-in">
+        <div class="face card c-amber"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/></svg></div><div class="n">PRINCIPIO 1</div><h3>Fricción reflexiva</h3><p>Una pausa consciente antes de abrir una app vigilada.</p><div class="more">Toca para ver más →</div></div>
+        <div class="face back card c-amber"><h3>Fricción reflexiva</h3><p>Pausa de 5, 10 o 20 s según el nivel, con opción de salir o continuar.</p><div class="big">−57 %</div><p>aperturas en un experimento con 280 personas durante 6 semanas. Poder desistir fue lo que más efecto tuvo.</p></div>
+      </div></div>
+      <div class="flip" tabindex="0"><div class="flip-in">
+        <div class="face card c-cyan"><div class="ico" style="--c:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div><div class="n">PRINCIPIO 2</div><h3>Límites intencionales</h3><p>La persona decide qué apps vigilar, cuántos minutos y cuántas aperturas.</p><div class="more">Toca para ver más →</div></div>
+        <div class="face back card c-cyan"><h3>Límites intencionales</h3><p>El plan reduce el límite de forma gradual.</p><div class="big">Lógica difusa</div><p>Un controlador difuso calcula el ajuste semanal con la adherencia y las pausas ignoradas.</p></div>
+      </div></div>
+      <div class="flip" tabindex="0"><div class="flip-in">
+        <div class="face card c-violet"><div class="ico" style="--c:var(--violet)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5a4.5 4.5 0 0 0 7 0M9 9.5h.01M15 9.5h.01"/></svg></div><div class="n">PRINCIPIO 3</div><h3>Acompañamiento</h3><p>Foqui muestra el estado de la semana de forma visual y pedagógica.</p><div class="more">Toca para ver más →</div></div>
+        <div class="face back card c-violet"><h3>Acompañamiento</h3><p>Cinco estados: Normal, Atenta, Enfocado, Feliz y Cansado.</p><div class="big" style="font-size:40px">IA que explica</div><p>Explica los resultados en tono cercano. No fija límites ni da consejos médicos.</p></div>
+      </div></div>
+    </div>
+    <div class="exit"><span class="chip" style="--c:var(--green)">🔓 Desbloqueo de emergencia · 5 min</span> El bloqueo siempre tiene salida: apps como WhatsApp también sirven para comunicaciones importantes.</div>
+  </section>
+
+  <!-- 6 · Cómo funciona -->
+  <section class="slide" data-foqui="tranquilo" data-glow="cyan" data-say="¡Pruébalo! Elige un modo y toca una app del teléfono.">
+    <div class="eyebrow" style="--c:var(--cyan)">05 · Cómo funciona</div>
+    <h2 style="margin-bottom:20px">Así lo vive la persona</h2>
+    <div class="how">
+      <div class="steps">
+        <div class="card c-amber"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg></div><div><h3>1 · Elige qué apps vigilar</h3><p>Instagram, TikTok, YouTube, WhatsApp, Facebook, X, Netflix, Reddit y juegos como Clash Royale o Free Fire.</p></div></div>
+        <div class="card c-cyan"><div class="ico" style="--c:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg></div><div><h3>2 · Pausa al abrirlas</h3><p>Una pausa breve con la opción de salir o continuar.</p></div></div>
+        <div class="card c-red"><div class="ico" style="--c:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><div><h3>3 · Límite de minutos o aperturas</h3><p>Al pasarlo, la app se pausa. Siempre hay desbloqueo de emergencia.</p></div></div>
+        <div class="card c-green"><div class="ico" style="--c:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></div><div><h3>4 · Modo Foco</h3><p>Sesiones con apps silenciadas y sonido ambiental local.</p></div></div>
+      </div>
+      <div class="phonecol">
+        <div class="modes" id="modes">
+          <button class="on" data-mode="pausa">Pausa</button>
+          <button data-mode="limite">Límite</button>
+          <button data-mode="foco">Modo Foco</button>
+        </div>
+        <div class="phone">
+          <div class="scr" id="scr">
+            <div class="notch"></div>
+            <div class="home">
+              <div class="clock">9:41</div>
+              <div class="date">FOCUS! está activo</div>
+              <div class="apps" id="apps"></div>
+            </div>
+            <div class="tap" id="tapHint">Toca una app</div>
+            <div class="opened" id="opened"></div>
+            <div class="ov" id="ov"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · Cómo recopila los datos -->
+  <section class="slide" data-foqui="serio" data-glow="green" data-say="Presiona “Enviar lote” para ver el camino de los datos, del teléfono a la nube.">
+    <div class="eyebrow" style="--c:var(--green)">06 · Cómo recopila los datos</div>
+    <h2>Del teléfono a la nube, en lotes</h2>
+    <div class="pipe" id="pipe">
+      <div class="line"></div><div class="pk"></div><div class="pk"></div><div class="pk"></div>
+      <div class="node2" style="--c:var(--amber)"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></div><h3>Mide en el teléfono</h3><p>Minutos y aperturas por app, con el permiso que la persona concede.</p></div>
+      <div class="node2" style="--c:var(--cyan)"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></div><h3>Detecta la app al frente</h3><p>Sabe qué app se abrió, pero no puede leer su contenido.</p></div>
+      <div class="node2" style="--c:var(--violet)"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div><h3>Agrupa por día</h3><p>El día empieza a las 06:00, para que la noche cuente en la jornada que la originó.</p></div>
+      <div class="node2" style="--c:var(--teal)"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></div><h3>Envía un lote</h3><p>Una sola vez cada 6 h y solo con internet, en vez de enviar cada apertura.</p></div>
+      <div class="node2" style="--c:var(--green)"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 18a5 5 0 1 1 .9-9.9A6 6 0 0 1 19 10a4 4 0 0 1-1 7.9z"/><path d="M9 13l2 2 4-4"/></svg></div><h3>Guarda sin duplicar</h3><p>Cada lote reenvía 7 días: si un envío se pierde, el siguiente lo corrige.</p></div>
+    </div>
+    <div class="grid data-lower">
+      <div class="card c-green yes"><h3 class="neon-g" style="font-size:17px">Lo que sí registra</h3><ul><li>Minutos de uso por app y por día</li><li>Número de aperturas</li><li>Pausas respetadas e ignoradas</li></ul></div>
+      <div class="card c-red no"><h3 style="font-size:17px; color:var(--red); text-shadow:0 0 10px var(--red)">Lo que nunca lee</h3><ul><li>Textos, mensajes ni contraseñas</li><li>Contenido alguno de otras apps</li><li>La IA no recibe nombres de apps ni horarios</li></ul></div>
+      <div class="go"><button class="btn" id="sendBtn">⇪ Enviar lote</button><span class="src" id="sendMsg" style="max-width:210px">Simula la sincronización de cada 6 horas.</span></div>
+    </div>
+  </section>
+
+  <!-- 8 · Estructura -->
+  <section class="slide" data-foqui="serio" data-glow="violet" data-say="Toca cada pieza del diagrama. El cálculo vive en la nube; el bloqueo, en el teléfono.">
+    <div class="eyebrow" style="--c:var(--violet)">07 · Estructura</div>
+    <h2>Cuatro componentes conectados</h2>
+    <div class="arch">
+      <div class="card diagram c-violet" id="diagram">
+        <div class="cloud">MICROSOFT AZURE</div>
+        <svg class="lines" id="lines"></svg>
+        <button class="node" data-n="android" id="n-android" style="--c:var(--amber); left:24px; top:86px"><b>App Android</b><span>Kotlin + Compose</span></button>
+        <button class="node" data-n="web" id="n-web" style="--c:var(--green); left:24px; top:296px"><b>Portal web</b><span>React + Vite</span></button>
+        <button class="node on" data-n="api" id="n-api" style="--c:var(--cyan); left:250px; top:176px"><b>API FastAPI</b><span>Azure App Service</span></button>
+        <button class="node" data-n="sql" id="n-sql" style="--c:var(--violet); left:250px; top:344px"><b>Azure SQL</b><span>Base de datos</span></button>
+        <button class="node small" data-n="claude" id="n-claude" style="--c:var(--teal); left:478px; top:66px"><b>API de Claude</b><span>Texto de Foqui</span></button>
+        <button class="node small" data-n="func" id="n-func" style="--c:var(--teal); left:478px; top:186px"><b>Azure Functions</b><span>Ajuste semanal</span></button>
+        <button class="node small" data-n="blob" id="n-blob" style="--c:var(--teal); left:478px; top:306px"><b>Blob Storage</b><span>Fotos de perfil</span></button>
+      </div>
+      <div class="card detail" id="detail"></div>
+    </div>
+  </section>
+
+  <!-- 9 · Riesgo de recaída -->
+  <section class="slide" data-foqui="serio" data-glow="amber" data-say="Mueve los controles y mira mi cara: el cumplimiento de la semana es lo que más pesa.">
+    <div class="eyebrow">08 · Inteligencia</div>
+    <h2>Predecir la recaída antes de que pase</h2>
+    <div class="risk">
+      <div class="card sliders c-amber" id="sliders"></div>
+      <div class="card gauge-card c-cyan">
+        <svg class="gauge" viewBox="0 0 300 175" id="gauge"></svg>
+        <div class="level" id="level">Riesgo alto</div>
+        <div class="prob" id="prob">p = 0.805</div>
+        <div class="metrics">
+          <span class="chip" style="--c:var(--cyan)">Regresión logística · 7 variables</span>
+          <span class="chip" style="--c:var(--green)">AUC 0.848</span>
+          <span class="chip" style="--c:var(--violet)">Exactitud 0.761</span>
+        </div>
+        <p class="warn">Predice si la persona se pasará de su límite la próxima semana. Entrenado con 22 100 semanas sintéticas: prueba el método, aún no el comportamiento real.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 · Confianza -->
+  <section class="slide" data-foqui="tranquilo" data-glow="green" data-say="Seguridad, privacidad y responsabilidad: tres cosas que no se negocian.">
+    <div class="eyebrow" style="--c:var(--green)">09 · Confianza</div>
+    <h2>Seguro, privado y responsable</h2>
+    <div class="grid trust">
+      <div class="card hov c-cyan"><div class="ico" style="--c:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><h3>Contraseñas protegidas</h3><p>Se guardan con hash bcrypt; nunca en texto plano.</p></div>
+      <div class="card hov c-violet"><div class="ico" style="--c:var(--violet)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/></svg></div><h3>Cada quien ve lo suyo</h3><p>La identidad sale de un token firmado, nunca de la dirección: nadie puede ver otra cuenta.</p></div>
+      <div class="card hov c-amber"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1l22 22M16.7 16.7A10 10 0 0 1 2 12M5 5a10 10 0 0 1 14 0M8.5 8.5a5 5 0 0 1 7 0M12 20h.01"/></svg></div><h3>Funciona sin internet</h3><p>El bloqueo corre completo en el teléfono, sin esperar al servidor.</p></div>
+      <div class="card hov c-teal"><div class="ico" style="--c:var(--teal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><path d="M4 4l16 16"/></svg></div><h3>No lee contenido</h3><p>Solo sabe qué app está al frente; el dato se procesa en el teléfono.</p></div>
+      <div class="card hov c-green"><div class="ico" style="--c:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg></div><h3>Se recupera sola</h3><p>La base de datos se pausa para ahorrar costos; al despertar, la app y el portal reintentan sin que la persona lo note.</p></div>
+      <div class="card hov c-red"><div class="ico" style="--c:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/></svg></div><h3>Responsable</h3><p>No es tratamiento ni diagnóstico. Ante malestar serio, sugiere apoyo profesional.</p></div>
+    </div>
+  </section>
+
+  <!-- 11 · Cierre -->
+  <section class="slide" data-foqui="tranquilo" data-glow="amber" data-hide-buddy>
+    <div class="eyebrow">10 · Estado y próximos pasos</div>
+    <h2>Listo para crecer</h2>
+    <div class="close">
+      <div>
+        <div class="status">Desplegado y funcional en Microsoft Azure</div>
+        <p style="font-size:15px; margin-bottom:16px">Para una publicación abierta faltan pasos acotados:</p>
+        <div class="road">
+          <div class="card c-amber"><p>Cumplir la divulgación de Google Play: aviso destacado y consentimiento</p></div>
+          <div class="card c-cyan"><p>Validar el modelo de riesgo con datos reales y consentidos</p></div>
+          <div class="card c-violet"><p>Medir en dispositivos reales el tiempo total del bloqueo</p></div>
+          <div class="card c-green"><p>Automatizar la configuración de seguridad en los despliegues</p></div>
+        </div>
+      </div>
+      <div class="card end c-amber">
+        <div class="bob"><svg class="foqui" id="endFoqui" data-expr="tranquilo" viewBox="0 0 120 120" role="button" aria-label="Foqui"></svg></div>
+        <h3 class="neon">¡Gracias!</h3>
+        <p>Una pausa breve y la posibilidad de desistir pueden cambiar la conducta de manera medible.</p>
+        <div class="url">Portal web · green-moss-07816e210.4.azurestaticapps.net</div>
+      </div>
+    </div>
+  </section>
+
+  <div id="buddy" class="hidden">
+    <div id="bubble"></div>
+    <div class="wrap" id="buddyWrap"><svg class="foqui" id="buddyFoqui" data-expr="serio" viewBox="0 0 120 120" role="button" aria-label="Foqui"></svg></div>
+  </div>
+
+  <nav id="bar">
+    <div style="width:186px"></div>
+    <div id="dots"></div>
+    <div class="ctrl">
+      <button id="prevBtn" title="Anterior (←)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <span id="count">1 / 11</span>
+      <button id="nextBtn" title="Siguiente (→)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></button>
+      <button id="fsBtn" title="Pantalla completa (F)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+    </div>
+  </nav>
+</div>
+</div>
+
+<script>
+/* ---------- Foqui animado: trazos de "Foqui / Expresión" y "Foqui / Saludando" (Figma) ---------- */
+const N = '#0F172A', A = '#F59E0B', NS = 'http://www.w3.org/2000/svg';
+const ORBIT_FRONT = 'M113.18 80.6229C113.732 83.7572 108.659 87.751 99.077 91.7258C89.4947 95.7006 76.1878 99.3307 62.0837 101.818C47.9796 104.305 34.2336 105.445 23.8697 104.987C13.5058 104.529 7.37296 102.511 6.82031 99.377';
+const ORBIT_BACK = 'M113.18 80.623C112.627 77.4888 106.494 75.4708 96.1302 75.0131C85.7663 74.5554 72.0203 75.6954 57.9162 78.1823C43.8121 80.6693 30.5052 84.2994 20.9228 88.2742C11.3405 92.249 6.2677 96.2428 6.82035 99.377';
+const BL = 'M39 74.2C42.04 74.2 44.5 72.77 44.5 71C44.5 69.23 42.04 67.8 39 67.8C35.96 67.8 33.5 69.23 33.5 71C33.5 72.77 35.96 74.2 39 74.2Z';
+const BR = 'M81 74.2C84.04 74.2 86.5 72.77 86.5 71C86.5 69.23 84.04 67.8 81 67.8C77.96 67.8 75.5 69.23 75.5 71C75.5 72.77 77.96 74.2 81 74.2Z';
+
+/* Cada expresión como números, para poder pasar de una a otra poco a poco:
+   m = boca (curva), l = párpado (5 puntos), b = mejillas (r, g, b, opacidad) */
+const EXPR = {
+  tranquilo: { m: [49, 74, 56.33, 82, 63.67, 82, 71, 74], l: [43, 38, 77, 38, 77, 38, 60, 38, 43, 38], b: [245, 158, 11, .75] },
+  serio:     { m: [51, 79, 57, 79, 63, 79, 69, 79],       l: [43, 38, 77, 38, 77, 50, 60, 50, 43, 50], b: [245, 158, 11, 0] },
+  enojado:   { m: [50, 83, 56.67, 76.33, 63.33, 76.33, 70, 83], l: [43, 38, 77, 38, 77, 46, 60, 56, 43, 46], b: [185, 28, 28, 1] }
+};
+const lerp = (a, b, t) => a + (b - a) * t;
+const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const mix = (A1, B1, t) => A1.map((v, i) => lerp(v, B1[i], t));
+const dMouth = m => `M${m[0]} ${m[1]}C${m[2]} ${m[3]} ${m[4]} ${m[5]} ${m[6]} ${m[7]}`;
+const dLid = l => `M${l[0]} ${l[1]}L${l[2]} ${l[3]}L${l[4]} ${l[5]}L${l[6]} ${l[7]}L${l[8]} ${l[9]}Z`;
+
+function foquiMarkup() {
+  return `<g class="fq-root">
+    <path d="${ORBIT_BACK}" stroke="${A}" stroke-width="5" fill="none" class="orb-back"/>
+    <g class="balls-back"></g>
+    <ellipse cx="47" cy="107" rx="12" ry="6" fill="${N}"/><ellipse cx="73" cy="107" rx="12" ry="6" fill="${N}"/>
+    <g class="ant"><path d="M60 31V18" stroke="${N}" stroke-width="3" stroke-linecap="round"/><circle cx="60" cy="14" r="5.5" fill="${A}"/></g>
+    <circle cx="60" cy="65" r="35" fill="${N}"/>
+    <g class="hand" opacity="0">
+      <path d="M108 21C111.5 24 112.5 28 111.5 32" stroke="${A}" stroke-width="2.4" stroke-linecap="round" fill="none" class="mv1"/>
+      <path d="M113.5 15C118.5 19.5 120 25.5 118.5 31.5" stroke="${A}" stroke-opacity=".6" stroke-width="2.4" stroke-linecap="round" fill="none" class="mv2"/>
+      <circle cx="101" cy="35" r="8.5" fill="${N}"/>
+    </g>
+    <g class="eye"><circle cx="60" cy="56" r="15" fill="#fff"/><g class="pupil"><circle cx="60" cy="58" r="8" fill="${N}"/><circle cx="63.6" cy="54" r="2.6" fill="#fff"/></g></g>
+    <path class="lid" fill="${N}"/>
+    <path d="M46.12 47.39C49.87 45.05 51.96 41.63 50.78 39.76C49.61 37.89 45.63 38.27 41.88 40.61C38.13 42.95 36.05 46.37 37.22 48.24C38.39 50.11 42.37 49.73 46.12 47.39Z" fill="#fff" fill-opacity=".22"/>
+    <path class="blush" d="${BL}"/><path class="blush" d="${BR}"/>
+    <path class="mouth" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <g class="open" opacity="0">
+      <path d="M51 75H69C69 77.39 68.05 79.68 66.36 81.36C64.68 83.05 62.39 84 60 84C57.61 84 55.32 83.05 53.64 81.36C51.95 79.68 51 77.39 51 75Z" fill="#fff"/>
+      <path d="M55.5 80.6C55.91 81.45 56.55 82.16 57.34 82.66C58.14 83.16 59.06 83.42 60 83.42C60.94 83.42 61.86 83.16 62.66 82.66C63.45 82.16 64.09 81.45 64.5 80.6" fill="${A}"/>
+    </g>
+    <path d="${ORBIT_FRONT}" stroke="${N}" stroke-width="10" fill="none"/>
+    <path d="${ORBIT_FRONT}" stroke="${A}" stroke-width="5" fill="none" class="orb-front"/>
+    <g class="balls-front"></g>
+  </g>`;
+}
+/* Bolitas del aro: [radio exterior oscuro, radio ámbar, posición inicial en la órbita] */
+const BALLS = [[9, 6.5, .52], [0, 5, .04]];
+const FQ = new Map();
+let mouse = { x: 0, y: 0, t: -1e9 };
+
+function setupFoqui(svg) {
+  svg.innerHTML = foquiMarkup();
+  const q = c => svg.querySelector(c);
+  const st = {
+    svg, root: q('.fq-root'), ant: q('.ant'), hand: q('.hand'), pupil: q('.pupil'), lid: q('.lid'), mouth: q('.mouth'), open: q('.open'),
+    blush: [...svg.querySelectorAll('.blush')], back: q('.orb-back'), front: q('.orb-front'),
+    expr: svg.dataset.expr || 'tranquilo', from: null, to: null, t0: 0,
+    antA: 0, antV: 0, tilt: 0, tiltV: 0, tiltTarget: 0,
+    look: [0, 0], lookTarget: null, wave0: -1e9, waveDur: 0, orbit: Math.random(), balls: []
+  };
+  st.cur = JSON.parse(JSON.stringify(EXPR[st.expr]));
+  st.Lb = st.back.getTotalLength(); st.Lf = st.front.getTotalLength();
+  BALLS.forEach(([ro, ri, u0]) => {
+    const mk = layer => { const g = document.createElementNS(NS, 'g'); g.innerHTML = (ro ? `<circle r="${ro}" fill="${N}"/>` : '') + `<circle r="${ri}" fill="${A}"/>`; svg.querySelector(layer).appendChild(g); return g; };
+    st.balls.push({ u0, gb: mk('.balls-back'), gf: mk('.balls-front') });
+  });
+  paintFace(st, st.cur);
+  FQ.set(svg, st);
+  return st;
+}
+function paintFace(st, p) {
+  st.mouth.setAttribute('d', dMouth(p.m));
+  st.lid.setAttribute('d', dLid(p.l));
+  st.blush.forEach(b => { b.setAttribute('fill', `rgb(${p.b[0] | 0},${p.b[1] | 0},${p.b[2] | 0})`); b.setAttribute('fill-opacity', p.b[3].toFixed(3)); });
+}
+/* Cambiar de expresión con animación: la cara se transforma, no se reemplaza */
+function drawFoqui(svg, expr) {
+  const st = FQ.get(svg) || setupFoqui(svg);
+  if (st.expr === expr && !st.to) return;
+  st.from = JSON.parse(JSON.stringify(st.cur)); st.to = EXPR[expr]; st.t0 = performance.now(); st.expr = expr; svg.dataset.expr = expr;
+  kick(svg, expr === 'enojado' ? -260 : 180);
+}
+function kick(svg, imp = 220) { const st = FQ.get(svg); if (st) st.antV += imp; }
+function wave(svg, cycles = 3) {
+  const st = FQ.get(svg); if (!st) return;
+  if (st.expr !== 'tranquilo') drawFoqui(svg, 'tranquilo');
+  st.wave0 = performance.now(); st.waveDur = cycles * 520; kick(svg, 260);
+}
+function anim(el, cls) {
+  el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(() => el.classList.remove(cls), 900);
+  (el.matches('svg.foqui') ? [el] : el.querySelectorAll('svg.foqui')).forEach(s => kick(s, cls === 'shake' ? 320 : 240));
+}
+document.querySelectorAll('svg.foqui').forEach(setupFoqui);
+document.addEventListener('pointermove', e => { mouse = { x: e.clientX, y: e.clientY, t: performance.now() }; });
+
+function isShown(svg) {
+  if (svg.id === 'buddyFoqui') return !document.getElementById('buddy').classList.contains('hidden');
+  const s = svg.closest('.slide'); return !!(s && s.classList.contains('active'));
+}
+let lastT = performance.now();
+function frame(now) {
+  const dt = Math.min(.05, (now - lastT) / 1000); lastT = now;
+  FQ.forEach(st => {
+    if (!isShown(st.svg)) return;
+    /* Cambio de expresión */
+    if (st.to) {
+      const k = Math.min(1, (now - st.t0) / 480), e = ease(k);
+      st.cur = { m: mix(st.from.m, st.to.m, e), l: mix(st.from.l, st.to.l, e), b: mix(st.from.b, st.to.b, e) };
+      paintFace(st, st.cur);
+      if (k >= 1) { st.cur = JSON.parse(JSON.stringify(st.to)); st.to = null; }
+    }
+    /* Saludo: la mano se mueve de lado a lado y la boca se abre */
+    const w = (now - st.wave0) / st.waveDur, waving = w >= 0 && w < 1;
+    const fade = waving ? Math.min(1, w * 6, (1 - w) * 6) : 0;
+    st.hand.setAttribute('opacity', fade.toFixed(2));
+    if (waving) {
+      const ang = Math.sin(w * st.waveDur / 520 * Math.PI * 2) * 22;
+      st.hand.setAttribute('transform', `rotate(${ang.toFixed(1)} 90 50)`);
+      st.hand.querySelector('.mv1').setAttribute('opacity', (.5 + .5 * Math.sin(now / 90)).toFixed(2));
+      st.hand.querySelector('.mv2').setAttribute('opacity', (.5 + .5 * Math.cos(now / 90)).toFixed(2));
+      if (Math.random() < .03) st.antV += 90;
+    }
+    st.open.setAttribute('opacity', fade.toFixed(2));
+    st.mouth.setAttribute('opacity', (1 - fade).toFixed(2));
+    /* Antena con resorte, más un vaivén suave en reposo */
+    const idle = Math.sin(now / 700) * 3 + st.tilt * .35;
+    st.antV += (-140 * (st.antA - idle) - 7 * st.antV) * dt; st.antA += st.antV * dt;
+    st.ant.setAttribute('transform', `rotate(${st.antA.toFixed(2)} 60 31)`);
+    /* Inclinación del cuerpo (también con resorte) */
+    st.tiltV += (-60 * (st.tilt - st.tiltTarget) - 10 * st.tiltV) * dt; st.tilt += st.tiltV * dt;
+    st.root.setAttribute('transform', `rotate(${st.tilt.toFixed(2)} 60 108)`);
+    /* Mirada: sigue al mouse si se movió hace poco; si no, mira a donde le toque */
+    let tx = 0, ty = 0;
+    if (now - mouse.t < 2500 || !st.lookTarget) {
+      const r = st.svg.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height * .47;
+      const dx = mouse.x - cx, dy = mouse.y - cy, d = Math.hypot(dx, dy) || 1, m = mouse.t > 0 ? Math.min(1, d / 300) * 3.2 : 0;
+      tx = dx / d * m; ty = dy / d * m;
+    } else { tx = st.lookTarget[0]; ty = st.lookTarget[1]; }
+    st.look[0] = lerp(st.look[0], tx, Math.min(1, dt * 9)); st.look[1] = lerp(st.look[1], ty, Math.min(1, dt * 9));
+    st.pupil.setAttribute('transform', `translate(${st.look[0].toFixed(2)} ${st.look[1].toFixed(2)})`);
+    /* Bolitas recorriendo el aro: por detrás del cuerpo y luego por delante */
+    st.orbit = (st.orbit + dt / 16) % 1;
+    st.balls.forEach(b => {
+      const u = (b.u0 + st.orbit) % 1, behind = u < .5;
+      const p = behind ? st.back.getPointAtLength(u / .5 * st.Lb) : st.front.getPointAtLength((1 - (u - .5) / .5) * st.Lf);
+      const g = behind ? b.gb : b.gf, o = behind ? b.gf : b.gb;
+      g.setAttribute('transform', `translate(${p.x.toFixed(2)} ${p.y.toFixed(2)})`); g.style.display = ''; o.style.display = 'none';
+    });
+  });
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* Foqui de la esquina "esperando": pequeños gestos al azar mientras nadie interactúa */
+let lastReact = 0;
+function idleBuddy() {
+  const svg = document.getElementById('buddyFoqui'), st = FQ.get(svg);
+  if (st && isShown(svg) && performance.now() - lastReact > 3500) {
+    const r = Math.random();
+    if (r < .4) { st.lookTarget = [-3.2, -1.6]; st.tiltTarget = -7; kick(svg, -150); setTimeout(() => { st.tiltTarget = 0; }, 1800); setTimeout(() => { st.lookTarget = [0, 0]; }, 2600); }
+    else if (r < .6) { st.tiltTarget = 6; kick(svg, 160); setTimeout(() => { st.tiltTarget = -4; kick(svg, -120); }, 500); setTimeout(() => { st.tiltTarget = 0; }, 1000); }
+    else if (r < .8) { anim(document.getElementById('buddyWrap'), 'hop'); }
+    else { st.lookTarget = [2.6, -2.4]; kick(svg, 120); setTimeout(() => { st.lookTarget = [-3, -1]; }, 900); setTimeout(() => { st.lookTarget = [0, 0]; }, 2000); }
+  }
+  setTimeout(idleBuddy, 2600 + Math.random() * 2600);
+}
+setTimeout(idleBuddy, 3000);
+
+/* Partículas del fondo */
+const fx = document.getElementById('bgfx');
+for (let i = 0; i < 26; i++) { const p = document.createElement('i'); p.style.left = Math.random() * 100 + '%'; p.style.top = 40 + Math.random() * 70 + '%'; p.style.animationDelay = (-Math.random() * 9) + 's'; p.style.animationDuration = (7 + Math.random() * 6) + 's'; if (i % 3 === 0) { p.style.background = '#5ccbfa'; p.style.boxShadow = '0 0 8px #5ccbfa'; } fx.appendChild(p); }
+const GLOWS = { amber: ['#f59e0b', '#5ccbfa'], cyan: ['#5ccbfa', '#f59e0b'], red: ['#fb8a8a', '#f59e0b'], green: ['#5ee0b0', '#5ccbfa'], violet: ['#c4b5fd', '#5ccbfa'] };
+
+/* ---------- Escala ---------- */
+const stage = document.getElementById('stage');
+function fit() { stage.style.transform = `scale(${Math.min(innerWidth / 1280, innerHeight / 720)})`; }
+addEventListener('resize', fit); fit();
+
+/* ---------- Navegación y compañero ---------- */
+const slides = [...document.querySelectorAll('.slide')];
+const dots = document.getElementById('dots');
+const buddy = document.getElementById('buddy'), bubble = document.getElementById('bubble'), buddyFoqui = document.getElementById('buddyFoqui'), buddyWrap = document.getElementById('buddyWrap');
+let cur = 0, bubbleTimer;
+slides.forEach((_, i) => { const b = document.createElement('button'); b.setAttribute('aria-label', 'Diapositiva ' + (i + 1)); b.onclick = () => go(i); dots.appendChild(b); });
+
+function say(text, ms = 4200) {
+  if (!text) return;
+  bubble.textContent = text; bubble.classList.add('show');
+  clearTimeout(bubbleTimer); bubbleTimer = setTimeout(() => bubble.classList.remove('show'), ms);
+}
+function react(expr, text, move = 'hop') { lastReact = performance.now(); drawFoqui(buddyFoqui, expr); anim(buddyWrap, move); if (text) say(text); }
+
+function go(i) {
+  i = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach((s, k) => s.classList.toggle('active', k === i));
+  [...dots.children].forEach((d, k) => d.classList.toggle('on', k === i));
+  document.getElementById('count').textContent = `${i + 1} / ${slides.length}`;
+  document.getElementById('progress').style.width = ((i + 1) / slides.length * 100) + '%';
+  const s = slides[i], g = GLOWS[s.dataset.glow || 'amber'];
+  document.querySelector('.g1').style.background = g[0]; document.querySelector('.g2').style.background = g[1];
+  const hide = i === 0 || s.hasAttribute('data-hide-buddy');
+  buddy.classList.toggle('hidden', hide);
+  bubble.classList.remove('show');
+  if (!hide) { drawFoqui(buddyFoqui, s.dataset.foqui || 'tranquilo'); setTimeout(() => { anim(buddyWrap, 'hop'); say(s.dataset.say); }, 650); }
+  cur = i; onEnter(s);
+  if (i === 0) heroEntrance();
+  if (s.contains(document.getElementById('endFoqui'))) setTimeout(() => wave(document.getElementById('endFoqui'), 4), 600);
+  try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) {}
+}
+buddyFoqui.addEventListener('click', () => { anim(buddyWrap, 'hop'); if (bubble.classList.contains('show')) bubble.classList.remove('show'); else say(slides[cur].dataset.say); });
+['heroFoqui', 'endFoqui'].forEach(id => document.getElementById(id).addEventListener('click', e => { wave(e.currentTarget, 3); anim(e.currentTarget.parentElement, 'hop'); }));
+/* Entrada de Foqui en la portada y saludo; en la última diapositiva se despide */
+function heroEntrance() {
+  const svg = document.getElementById('heroFoqui'), w = document.getElementById('heroWrap');
+  w.classList.remove('fq-enter'); void w.offsetWidth; w.classList.add('fq-enter');
+  setTimeout(() => kick(svg, 300), 650);
+  setTimeout(() => wave(svg, 4), 900);
+}
+
+document.getElementById('prevBtn').onclick = () => go(cur - 1);
+document.getElementById('nextBtn').onclick = () => go(cur + 1);
+document.getElementById('fsBtn').onclick = toggleFs;
+function toggleFs() { if (!document.fullscreenElement) document.documentElement.requestFullscreen?.(); else document.exitFullscreen?.(); }
+addEventListener('keydown', e => {
+  if (e.target.type === 'range' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) return;
+  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); go(cur + 1); }
+  else if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); go(cur - 1); }
+  else if (e.key === 'Home') go(0);
+  else if (e.key === 'End') go(slides.length - 1);
+  else if (e.key.toLowerCase() === 'f') toggleFs();
+});
+let tx = null;
+addEventListener('touchstart', e => tx = e.touches[0].clientX, { passive: true });
+addEventListener('touchend', e => { if (tx === null) return; const d = e.changedTouches[0].clientX - tx; if (Math.abs(d) > 60) go(cur + (d < 0 ? 1 : -1)); tx = null; });
+
+/* Animaciones al entrar */
+function onEnter(s) {
+  s.querySelectorAll('[data-count]').forEach(el => {
+    const to = +el.dataset.count, dec = +el.dataset.dec, suf = el.dataset.suf || '', t0 = performance.now();
+    (function tick(t) { const k = Math.min(1, (t - t0) / 1300), v = to * (1 - Math.pow(1 - k, 3)); el.innerHTML = v.toLocaleString('es-MX', { minimumFractionDigits: dec, maximumFractionDigits: dec }) + `<small>${suf}</small>`; if (k < 1) requestAnimationFrame(tick); })(t0);
+  });
+  s.querySelectorAll('.bar .f').forEach(f => { f.style.width = '0'; setTimeout(() => f.style.width = f.dataset.w + '%', 120); });
+  if (s.contains(gauge)) risk();
+  if (s.contains(document.getElementById('diagram'))) requestAnimationFrame(drawLines);
+}
+
+/* ---------- 3 · Mecanismos y pestañas ---------- */
+document.querySelectorAll('#mech .chip').forEach(c => c.onclick = () => {
+  document.querySelectorAll('#mech .chip').forEach(x => x.classList.toggle('on', x === c));
+  react('enojado', c.dataset.m, 'shake');
+});
+document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => {
+  b.parentElement.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('.tabpanel').forEach(p => p.classList.toggle('on', p.id === b.dataset.tab));
+});
+
+/* ---------- 5 · Tarjetas ---------- */
+document.querySelectorAll('.flip').forEach(f => {
+  const t = () => { f.classList.toggle('open'); if (f.classList.contains('open')) anim(buddyWrap, 'hop'); };
+  f.onclick = t; f.onkeydown = e => { if (e.key === 'Enter') t(); };
+});
+
+/* ---------- 6 · Teléfono interactivo ---------- */
+const APPS = [['Instagram', 'linear-gradient(135deg,#f58529,#dd2a7b,#8134af)', 'Ig'], ['TikTok', '#111827', '♪'], ['YouTube', '#dc2626', '▶'], ['WhatsApp', '#16a34a', 'W'], ['Facebook', '#2563eb', 'f'], ['X', '#000', 'X'], ['Netflix', '#111', 'N'], ['Reddit', '#ea580c', 'R']];
+const appsEl = document.getElementById('apps'), ov = document.getElementById('ov'), opened = document.getElementById('opened'), tapHint = document.getElementById('tapHint');
+let mode = 'pausa', tick = null;
+APPS.forEach(([n, bg, l]) => { const b = document.createElement('button'); b.className = 'app'; b.innerHTML = `<i style="background:${bg}">${l}</i>${n}`; b.onclick = () => openApp(n, bg); appsEl.appendChild(b); });
+document.querySelectorAll('#modes button').forEach(b => b.onclick = () => { mode = b.dataset.mode; document.querySelectorAll('#modes button').forEach(x => x.classList.toggle('on', x === b)); closePhone(); react('tranquilo', { pausa: 'Modo pausa: verás una pausa consciente antes de entrar.', limite: 'Modo límite: ya usaste todo tu tiempo de hoy en esa app.', foco: 'Modo Foco: las apps vigiladas están en silencio durante la sesión.' }[mode]); });
+function closePhone() { clearInterval(tick); ov.classList.remove('on'); opened.classList.remove('on'); tapHint.style.opacity = 1; }
+function openApp(name, bg) {
+  clearInterval(tick); tapHint.style.opacity = 0; opened.classList.remove('on');
+  const bgDiv = `<div class="appbg" style="background:${bg}"></div>`;
+  if (mode === 'pausa') {
+    const total = 10; let left = total; const C = 2 * Math.PI * 46;
+    ov.innerHTML = `${bgDiv}<h4>Pausa consciente</h4><p>Estás por abrir <b>${name}</b>.<br>¿Es lo que quieres hacer ahora?</p>
+      <div class="ring"><svg viewBox="0 0 108 108"><circle cx="54" cy="54" r="46" stroke="#273449" stroke-width="7" fill="none"/><circle id="arc" cx="54" cy="54" r="46" stroke="#fcc94a" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="0" style="filter:drop-shadow(0 0 6px #f59e0b);transition:stroke-dashoffset 1s linear"/></svg><b id="cnt">${left}</b></div>
+      <p style="font-size:11px;color:var(--text-3)">Nivel elegido: pausa de 10 s</p>
+      <div class="acts"><button class="a1" id="bExit">Salir</button><button class="a2" id="bGo" disabled>Continuar</button></div>`;
+    ov.classList.add('on'); react('serio', `Abriste ${name}. Te doy unos segundos para decidir.`);
+    tick = setInterval(() => { left--; document.getElementById('cnt').textContent = Math.max(left, 0); document.getElementById('arc').style.strokeDashoffset = C * (1 - left / total); if (left <= 0) { clearInterval(tick); document.getElementById('bGo').disabled = false; } }, 1000);
+    document.getElementById('bExit').onclick = () => { closePhone(); react('tranquilo', '¡Bien decidido! Saliste sin abrir la app.'); };
+    document.getElementById('bGo').onclick = () => { ov.classList.remove('on'); opened.style.background = bg; opened.innerHTML = `<div>${name}<small>Tú decidiste continuar · toca para cerrar</small></div>`; opened.classList.add('on'); opened.onclick = closePhone; react('serio', 'Está bien: tú decides. Lo importante es que fue una decisión.'); };
+  } else if (mode === 'limite') {
+    ov.innerHTML = `${bgDiv}<h4>Llegaste a tu límite</h4><p>Ya usaste el tiempo que elegiste para <b>${name}</b> hoy.</p>
+      <div class="acts"><button class="a1" id="bBack">Volver a FOCUS!</button><button class="a2" id="bEm">Desbloqueo de emergencia</button></div>`;
+    ov.classList.add('on'); react('enojado', `¡Ey! Ya llegaste a tu límite de ${name} por hoy.`, 'shake');
+    document.getElementById('bBack').onclick = () => { closePhone(); react('tranquilo', '¡Así se hace! De regreso a FOCUS!.'); };
+    document.getElementById('bEm').onclick = () => { let s = 300; ov.innerHTML = `${bgDiv}<h4>Desbloqueo de emergencia</h4><p>Tienes un tiempo de gracia para lo importante.</p><div class="timer" id="em">5:00</div><div class="acts"><button class="a2" id="bDone">Listo</button></div>`;
+      tick = setInterval(() => { s = Math.max(0, s - 5); const e = document.getElementById('em'); if (e) e.textContent = Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); if (!s) clearInterval(tick); }, 100);
+      document.getElementById('bDone').onclick = closePhone; react('tranquilo', 'El bloqueo siempre tiene salida: 5 minutos de gracia.'); };
+  } else {
+    let s = 25 * 60;
+    ov.innerHTML = `${bgDiv}<h4>Sesión de foco en curso</h4><p><b>${name}</b> está en silencio durante tu sesión.</p><div class="timer" id="fc">25:00</div>
+      <div class="sounds" id="snd"><span class="on">Lluvia</span><span>Bosque</span><span>Ruido blanco</span><span>Cafetería</span><span>Lo-Fi</span></div>
+      <div class="acts"><button class="a1" id="bBack2">Volver a FOCUS!</button></div>`;
+    ov.classList.add('on'); react('tranquilo', 'Estás en Modo Foco. Elige un sonido ambiental.');
+    ov.querySelectorAll('#snd span').forEach(x => x.onclick = () => ov.querySelectorAll('#snd span').forEach(y => y.classList.toggle('on', y === x)));
+    tick = setInterval(() => { s--; const e = document.getElementById('fc'); if (e) e.textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }, 1000);
+    document.getElementById('bBack2').onclick = closePhone;
+  }
+}
+
+/* ---------- 7 · Enviar lote ---------- */
+let sending = false;
+document.getElementById('sendBtn').onclick = () => {
+  if (sending) return; sending = true;
+  const pipe = document.getElementById('pipe'), nodes = [...pipe.querySelectorAll('.node2')], msg = document.getElementById('sendMsg');
+  pipe.classList.remove('run'); void pipe.offsetWidth; pipe.classList.add('run');
+  msg.textContent = 'Enviando un lote con 7 días…'; react('serio', 'Allá van los datos del día, agrupados en un solo envío.');
+  nodes.forEach((n, k) => setTimeout(() => { n.classList.add('lit'); setTimeout(() => n.classList.remove('lit'), 700); }, 150 + k * 560));
+  setTimeout(() => { msg.textContent = '✓ Guardado sin duplicados.'; react('tranquilo', '¡Listo! Si un envío falla, el siguiente lo corrige solo.'); sending = false; }, 3100);
+};
+
+/* ---------- 8 · Estructura ---------- */
+const NODES = {
+  android: { c: 'var(--amber)', t: 'App Android', s: 'Kotlin · Compose Multiplatform', li: ['Mide el uso de cada app en el propio teléfono.', 'Aplica pausas y bloqueos sin depender de la red.', 'Envía sus datos en lotes cada 6 horas.'] },
+  web: { c: 'var(--green)', t: 'Portal web', s: 'React 19 · Vite 6', li: ['Consulta y ajusta los datos desde el navegador.', 'Se adapta a teléfonos.', 'Incluye un botón “Ver demo” con datos de ejemplo.'] },
+  api: { c: 'var(--cyan)', t: 'API FastAPI', s: 'Python · Azure App Service', li: ['Verifica la identidad de cada persona.', 'Guarda los datos de uso y los límites.', 'Calcula el resumen y el riesgo de recaída.'] },
+  sql: { c: 'var(--violet)', t: 'Azure SQL', s: 'Base de datos en la nube', li: ['Almacena cuentas, métricas y planes.', 'Se pausa sola cuando no hay actividad para ahorrar costos.', 'Conexión siempre cifrada.'] },
+  claude: { c: 'var(--teal)', t: 'API de Claude', s: 'Servicio de apoyo', li: ['Redacta en tono cercano la explicación del plan que da Foqui.', 'No recibe nombres de apps ni horarios.'] },
+  func: { c: 'var(--teal)', t: 'Azure Functions', s: 'Servicio de apoyo', li: ['Calcula el ajuste semanal del plan.'] },
+  blob: { c: 'var(--teal)', t: 'Blob Storage', s: 'Servicio de apoyo', li: ['Guarda las fotos de perfil.'] }
+};
+const detail = document.getElementById('detail');
+function showNode(k) {
+  const n = NODES[k];
+  document.querySelectorAll('#diagram .node').forEach(b => b.classList.toggle('on', b.dataset.n === k));
+  detail.style.setProperty('--c', n.c);
+  detail.innerHTML = `<h3>${n.t}</h3><div class="sub">${n.s}</div><ul>${n.li.map(x => `<li>${x}</li>`).join('')}</ul>
+    <div class="key"><b>Decisión clave:</b> los cálculos viven en la nube, así el teléfono y la web muestran exactamente las mismas cifras. El bloqueo es la excepción: corre en el teléfono para funcionar sin red.</div>`;
+  detail.animate([{ opacity: .3, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], { duration: 300 });
+}
+document.querySelectorAll('#diagram .node').forEach(b => b.onclick = () => { showNode(b.dataset.n); anim(buddyWrap, 'hop'); });
+showNode('api');
+function drawLines() {
+  const box = id => { const e = document.getElementById('n-' + id); return { l: e.offsetLeft, t: e.offsetTop, r: e.offsetLeft + e.offsetWidth, b: e.offsetTop + e.offsetHeight, cy: e.offsetTop + e.offsetHeight / 2, cx: e.offsetLeft + e.offsetWidth / 2 }; };
+  const h = (a, b) => { const A = box(a), B = box(b), m = (A.r + B.l) / 2; return `M${A.r} ${A.cy} C${m} ${A.cy} ${m} ${B.cy} ${B.l} ${B.cy}`; };
+  const api = box('api'), sql = box('sql'), and = box('android');
+  document.getElementById('lines').innerHTML = `
+    <g fill="none" stroke-linecap="round">
+      <path d="${h('android', 'api')}" stroke="#f59e0b" stroke-width="2.5" class="flow" style="filter:drop-shadow(0 0 4px #f59e0b)"/>
+      <path d="${h('web', 'api')}" stroke="#5ee0b0" stroke-width="2.5" class="flow" style="filter:drop-shadow(0 0 4px #5ee0b0)"/>
+      <path d="M${api.cx} ${api.b} V ${sql.t}" stroke="#c4b5fd" stroke-width="2.5" class="flow" style="filter:drop-shadow(0 0 4px #c4b5fd)"/>
+      <path d="${h('api', 'claude')}" stroke="#67e8f9" stroke-width="1.5" stroke-dasharray="4 6" opacity=".7"/>
+      <path d="${h('api', 'func')}" stroke="#67e8f9" stroke-width="1.5" stroke-dasharray="4 6" opacity=".7"/>
+      <path d="${h('api', 'blob')}" stroke="#67e8f9" stroke-width="1.5" stroke-dasharray="4 6" opacity=".7"/>
+    </g>
+    <g font-family="Inter" font-size="11" font-weight="700" fill="#94a3b8">
+      <text x="${api.cx + 8}" y="${(api.b + sql.t) / 2 + 4}">TLS</text>
+      <text x="${(and.r + api.l) / 2 + 8}" y="${(and.cy + api.cy) / 2 - 6}">HTTPS</text>
+    </g>`;
+}
+drawLines(); document.fonts && document.fonts.ready.then(drawLines);
+
+/* ---------- 9 · Modelo de riesgo (parámetros publicados en el documento) ---------- */
+const VARS = [
+  { k: 'adherencia', t: 'Cumplimiento de la semana', w: -1.749, mu: .851, sd: .195, min: 0, max: 1, step: .01, v: .72, fmt: v => Math.round(v * 100) + ' %', d: 'Qué tanto respetó sus límites', show: true },
+  { k: 'tendencia', w: .424, mu: -.005, sd: .145, v: -.08 },
+  { k: 'ignoradas', t: 'Pausas ignoradas', w: .291, mu: .436, sd: .170, min: 0, max: 1, step: .01, v: .55, fmt: v => Math.round(v * 100) + ' %', d: 'Veces que siguió de largo tras la pausa', show: true },
+  { k: 'nocturno', t: 'Uso nocturno', w: .288, mu: .258, sd: .155, min: 0, max: 1, step: .01, v: .38, fmt: v => Math.round(v * 100) + ' %', d: 'Parte del uso entre 22:00 y 05:59', show: true },
+  { k: 'foco', t: 'Sesiones de foco completadas', w: -.468, mu: .340, sd: .199, min: 0, max: 1, step: .01, v: .25, fmt: v => Math.round(v * 100) + ' %', d: 'Completadas entre las iniciadas', show: true },
+  { k: 'cambio', w: -.704, mu: -4.129, sd: 4.176, v: -2 },
+  { k: 'racha', t: 'Racha', w: -.515, mu: 2.166, sd: 3.086, min: 0, max: 12, step: 1, v: 0, fmt: v => v + (v === 1 ? ' semana' : ' semanas'), d: 'Semanas seguidas cumpliendo', show: true }
+];
+const B = -0.172248, DEF = VARS.map(v => v.v);
+const sliders = document.getElementById('sliders');
+VARS.filter(v => v.show).forEach(v => {
+  const el = document.createElement('div'); el.className = 'sl';
+  el.innerHTML = `<label><b>${v.t}</b><span id="o_${v.k}"></span></label><input type="range" min="${v.min}" max="${v.max}" step="${v.step}" value="${v.v}" id="r_${v.k}" aria-label="${v.t}"><small>${v.d}</small>`;
+  sliders.appendChild(el); el.querySelector('input').oninput = e => { v.v = +e.target.value; risk(); };
+});
+const rb = document.createElement('button'); rb.className = 'reset'; rb.textContent = 'Volver al ejemplo del documento';
+rb.onclick = () => { VARS.forEach((v, i) => { v.v = DEF[i]; const r = document.getElementById('r_' + v.k); if (r) r.value = v.v; }); risk(); };
+sliders.appendChild(rb);
+const gauge = document.getElementById('gauge'), CX = 150, CY = 155, R = 120;
+const pt = (p, r = R) => [CX - r * Math.cos(Math.PI * p), CY - r * Math.sin(Math.PI * p)];
+const arc = (a, b) => { const [x1, y1] = pt(a), [x2, y2] = pt(b); return `M${x1.toFixed(1)} ${y1.toFixed(1)} A${R} ${R} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}`; };
+gauge.innerHTML = `
+  <path d="${arc(0, 1)}" stroke="#273449" stroke-width="22" fill="none"/>
+  <path d="${arc(0, .42)}" stroke="#5ee0b0" stroke-width="16" fill="none" style="filter:drop-shadow(0 0 8px #5ee0b0)"/>
+  <path d="${arc(.42, .6)}" stroke="#fcc94a" stroke-width="16" fill="none" style="filter:drop-shadow(0 0 8px #f59e0b)"/>
+  <path d="${arc(.6, 1)}" stroke="#fb8a8a" stroke-width="16" fill="none" style="filter:drop-shadow(0 0 8px #fb8a8a)"/>
+  ${[[0, 'Bajo'], [.51, 'Medio'], [1, 'Alto']].map(([p, t]) => { const [x, y] = pt(p, R - 32); return `<text x="${x}" y="${y + 4}" font-size="11" font-weight="700" fill="#94a3b8" text-anchor="middle" font-family="Inter">${t}</text>`; }).join('')}
+  <g id="needle" style="transition: transform .6s cubic-bezier(.2,.8,.2,1); transform-origin: ${CX}px ${CY}px">
+    <path d="M${CX - 5} ${CY} L${CX} ${CY - R + 16} L${CX + 5} ${CY} Z" fill="#f1f5f9" style="filter:drop-shadow(0 0 6px #f1f5f9)"/>
+  </g>
+  <circle cx="${CX}" cy="${CY}" r="11" fill="#0f172a" stroke="#f1f5f9" stroke-width="2"/><circle cx="${CX}" cy="${CY}" r="4" fill="#f59e0b"/>`;
+let lastLv = '';
+function risk() {
+  const z = VARS.reduce((s, v) => s + v.w * (v.v - v.mu) / v.sd, B), p = 1 / (1 + Math.exp(-z));
+  VARS.filter(v => v.show).forEach(v => document.getElementById('o_' + v.k).textContent = v.fmt(v.v));
+  document.getElementById('needle').style.transform = `rotate(${(p * 180 - 90).toFixed(1)}deg)`;
+  const lv = p < .42 ? ['bajo', '#5ee0b0', 'tranquilo', '¡Así me gusta! Riesgo bajo.'] : p < .6 ? ['medio', '#fcc94a', 'serio', 'Riesgo medio: vale la pena poner atención.'] : ['alto', '#fb8a8a', 'enojado', 'Riesgo alto: un cumplimiento bajo es lo que más pesa.'];
+  const L = document.getElementById('level'); L.textContent = 'Riesgo ' + lv[0]; L.style.color = lv[1]; L.style.textShadow = `0 0 16px ${lv[1]}`;
+  document.getElementById('prob').textContent = 'probabilidad = ' + p.toFixed(3);
+  if (slides[cur] && slides[cur].contains(gauge) && lastLv && lastLv !== lv[0]) react(lv[2], lv[3], lv[0] === 'alto' ? 'shake' : 'hop');
+  else if (slides[cur] && slides[cur].contains(gauge)) drawFoqui(buddyFoqui, lv[2]);
+  lastLv = lv[0];
+}
+risk();
+
+/* Inicio */
+const start = parseInt(location.hash.slice(1), 10);
+go(isNaN(start) ? 0 : start - 1);
+</script>
+</body>
+</html>
