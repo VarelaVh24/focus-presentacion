@@ -233,6 +233,10 @@ kbd { font-family: inherit; font-size: 12px; font-weight: 700; padding: 3px 8px;
 .diagram svg.lines { position: absolute; inset: 0; width: 100%; height: 100%; }
 .flow { stroke-dasharray: 6 8; animation: dash 1.2s linear infinite; }
 @keyframes dash { to { stroke-dashoffset: -28; } }
+.pulse { stroke-dasharray: 9 37; stroke-linecap: round; animation: pulse 1.15s linear infinite; }
+@keyframes pulse { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -46; } }
+.flow-s { animation: flowS .8s linear infinite; }
+@keyframes flowS { to { stroke-dashoffset: -18; } }
 .node { --c: var(--amber); position: absolute; width: 176px; padding: 12px 14px; border-radius: 14px; background: #0f172a; border: 1.5px solid color-mix(in srgb, var(--c) 55%, transparent); text-align: left; transition: box-shadow .2s, transform .2s, border-color .2s; box-shadow: 0 0 12px color-mix(in srgb, var(--c) 20%, transparent); }
 .node:hover { transform: translateY(-2px); }
 .node.on { border-color: var(--c); box-shadow: 0 0 26px color-mix(in srgb, var(--c) 55%, transparent), inset 0 0 12px color-mix(in srgb, var(--c) 18%, transparent); }
@@ -904,8 +908,9 @@ function drawLines() {
   const A = box('api'), and = box('android'), web = box('web'), sql = box('sql'), cl = box('claude'), bl = box('blob'), sw = box('swa');
   const COL = { a: '#f59e0b', g: '#5ee0b0', v: '#c4b5fd', t: '#67e8f9' };
   const mk = Object.entries(COL).map(([k, c]) => `<marker id="ar-${k}" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="${c}"/></marker>`).join('');
-  const main = (d, k, both) => `<path d="${d}" stroke="${COL[k]}" stroke-width="2.2" marker-end="url(#ar-${k})" ${both ? `marker-start="url(#ar-${k})"` : ''} style="filter:drop-shadow(0 0 4px ${COL[k]})"/><path d="${d}" stroke="#fff" stroke-width="1.4" opacity=".35" class="flow"/>`;
-  const sup = (d) => `<path d="${d}" stroke="${COL.t}" stroke-width="1.5" stroke-dasharray="4 5" opacity=".75" marker-end="url(#ar-t)"/>`;
+  const pulse = (d, k, delay = 0) => `<path d="${d}" stroke="#fff" stroke-width="3.2" class="pulse" style="animation-delay:${delay}s;filter:drop-shadow(0 0 3px ${COL[k]}) drop-shadow(0 0 8px ${COL[k]})"/>`;
+  const main = (d, k, both, rev) => `<path d="${d}" stroke="${COL[k]}" stroke-width="2.2" opacity=".75" marker-end="url(#ar-${k})" ${both ? `marker-start="url(#ar-${k})"` : ''} style="filter:drop-shadow(0 0 4px ${COL[k]})"/>${pulse(d, k)}${rev ? pulse(rev, k, -.7) : ''}`;
+  const sup = (d) => `<path d="${d}" stroke="${COL.t}" stroke-width="1.6" stroke-dasharray="4 5" opacity=".85" marker-end="url(#ar-t)" class="flow-s"/>`;
   const badge = (x, y, n) => `<g><circle cx="${x}" cy="${y}" r="8.5" fill="#f59e0b" style="filter:drop-shadow(0 0 5px #f59e0b)"/><text x="${x}" y="${y + 3.6}" text-anchor="middle" font-size="10.5" font-weight="800" fill="#0b1322">${n}</text></g>`;
   // 1 · App → backend, 3 · backend → App (y lo mismo con el portal)
   const p1 = cv(and.r, and.cy - 12, A.l, A.t + 9, 13), p3 = cv(A.l, A.t + 24, and.r, and.cy + 14, -13);
@@ -915,7 +920,7 @@ function drawLines() {
     <g fill="none" stroke-linecap="round">
       ${main(p1, 'a')}${main(p3, 'a')}
       ${main(p2, 'g')}${main(p3b, 'g')}
-      ${main(`M${A.r + 2} ${sqY} H ${sql.l - 2}`, 'v', true)}
+      ${main(`M${A.r + 2} ${sqY} H ${sql.l - 2}`, 'v', true, `M${sql.l - 2} ${sqY} H ${A.r + 2}`)}
       ${sup(`M${A.cx} ${A.t} V ${cl.b + 2}`)}
       ${sup(cv(A.r, A.t + 10, bl.l, bl.cy))}
       ${sup(cv(sw.l, sw.cy, web.r, web.b - 8))}
