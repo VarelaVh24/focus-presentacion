@@ -240,7 +240,8 @@ kbd { font-family: inherit; font-size: 12px; font-weight: 700; padding: 3px 8px;
 .node span { font-size: 12.5px; color: var(--text-3); }
 .node.small { width: 150px; padding: 9px 12px; border-style: dashed; }
 .node.small b { font-size: 13.5px; }
-.cloud { position: absolute; right: 18px; top: 14px; font-size: 11px; font-weight: 800; letter-spacing: .14em; color: var(--cyan); text-shadow: 0 0 8px var(--cyan); }
+.azbox { position: absolute; left: 190px; top: 84px; right: 10px; height: 306px; border: 1.5px dashed rgba(92,203,250,.45); border-radius: 16px; background: rgba(92,203,250,.035); }
+.cloud { position: absolute; left: 14px; top: 9px; font-size: 11px; font-weight: 800; letter-spacing: .14em; color: var(--cyan); text-shadow: 0 0 8px var(--cyan); }
 .detail h3 { font-size: 24px; color: var(--c); text-shadow: 0 0 12px color-mix(in srgb, var(--c) 60%, transparent); }
 .detail .sub { font-size: 14px; font-weight: 600; color: var(--text-3); margin-bottom: 14px; }
 .detail ul { list-style: none; display: grid; gap: 10px; }
@@ -508,15 +509,16 @@ input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 
     <h2 style="margin-bottom:18px">En la nube, <span class="neon-g">sin invadir la privacidad</span></h2>
     <div class="techgrid">
       <div class="card diagram c-violet" id="diagram">
-        <div class="cloud">MICROSOFT AZURE</div>
+        <div class="azbox"><div class="cloud">MICROSOFT AZURE</div></div>
         <svg class="lines" id="lines"></svg>
-        <button class="node" data-n="android" id="n-android" style="--c:var(--amber); left:20px; top:64px; width:152px"><b>App Android</b><span>Kotlin + Compose</span></button>
-        <button class="node" data-n="web" id="n-web" style="--c:var(--green); left:20px; top:244px; width:152px"><b>Portal web</b><span>React + Vite</span></button>
-        <button class="node on" data-n="api" id="n-api" style="--c:var(--cyan); left:212px; top:154px; width:160px"><b>API FastAPI</b><span>Azure App Service</span></button>
-        <button class="node" data-n="sql" id="n-sql" style="--c:var(--violet); left:212px; top:284px; width:160px"><b>Azure SQL</b><span>Base de datos</span></button>
-        <button class="node small" data-n="claude" id="n-claude" style="--c:var(--teal); left:412px; top:52px; width:146px"><b>API de Claude</b><span>Texto de Foqui</span></button>
-        <button class="node small" data-n="func" id="n-func" style="--c:var(--teal); left:412px; top:160px; width:146px"><b>Azure Functions</b><span>Ajuste semanal</span></button>
-        <button class="node small" data-n="blob" id="n-blob" style="--c:var(--teal); left:412px; top:268px; width:146px"><b>Blob Storage</b><span>Fotos de perfil</span></button>
+        <button class="node small" data-n="claude" id="n-claude" style="--c:var(--teal); left:212px; top:12px; width:168px"><b>API de Claude</b><span>Explica el plan (Foqui)</span></button>
+        <button class="node" data-n="android" id="n-android" style="--c:var(--amber); left:14px; top:96px; width:144px"><b>App Android</b><span>Kotlin 2.4 · Compose Multiplatform 1.12</span></button>
+        <button class="node" data-n="web" id="n-web" style="--c:var(--green); left:14px; top:262px; width:144px"><b>Portal web</b><span>React 19 · Vite 6</span></button>
+        <button class="node on" data-n="api" id="n-api" style="--c:var(--cyan); left:212px; top:170px; width:168px"><b>Backend FastAPI</b><span>FastAPI ≥0.115 · Python 3.12 · App Service</span></button>
+        <button class="node small" data-n="blob" id="n-blob" style="--c:var(--teal); left:414px; top:112px; width:146px"><b>Blob Storage</b><span>Fotos de perfil</span></button>
+        <button class="node" data-n="sql" id="n-sql" style="--c:var(--violet); left:414px; top:200px; width:146px"><b>Azure SQL</b><span>Serverless · Gen5</span></button>
+        <button class="node small" data-n="func" id="n-func" style="--c:var(--teal); left:414px; top:300px; width:146px"><b>Azure Functions</b><span>Python 3.11 · ruta independiente</span></button>
+        <button class="node small" data-n="swa" id="n-swa" style="--c:var(--teal); left:212px; top:316px; width:168px"><b>Static Web Apps</b><span>Sirve el portal</span></button>
         <div class="detail-strip" id="detail"></div>
       </div>
       <div class="techright">
@@ -877,13 +879,14 @@ function openApp(name, bg) {
 
 /* ---------- 8 · Estructura ---------- */
 const NODES = {
-  android: { c: 'var(--amber)', t: 'App Android', s: 'Kotlin · Compose Multiplatform', li: ['Mide el uso de cada app en el propio teléfono.', 'Aplica pausas y bloqueos sin depender de la red.', 'Envía sus datos en lotes cada 6 horas.'] },
-  web: { c: 'var(--green)', t: 'Portal web', s: 'React 19 · Vite 6', li: ['Consulta y ajusta los datos desde el navegador.', 'Se adapta a teléfonos.', 'Incluye un botón “Ver demo” con datos de ejemplo.'] },
-  api: { c: 'var(--cyan)', t: 'API FastAPI', s: 'Python · Azure App Service', li: ['Verifica la identidad de cada persona.', 'Guarda los datos de uso y los límites.', 'Calcula el resumen y el riesgo de recaída.'] },
-  sql: { c: 'var(--violet)', t: 'Azure SQL', s: 'Base de datos en la nube', li: ['Almacena cuentas, métricas y planes.', 'Se pausa sola cuando no hay actividad para ahorrar costos.', 'Conexión siempre cifrada.'] },
-  claude: { c: 'var(--teal)', t: 'API de Claude', s: 'Servicio de apoyo', li: ['Redacta en tono cercano la explicación del plan que da Foqui.', 'No recibe nombres de apps ni horarios.'] },
-  func: { c: 'var(--teal)', t: 'Azure Functions', s: 'Servicio de apoyo', li: ['Calcula el ajuste semanal del plan.'] },
-  blob: { c: 'var(--teal)', t: 'Blob Storage', s: 'Servicio de apoyo', li: ['Guarda las fotos de perfil.'] }
+  android: { c: 'var(--amber)', t: 'App Android', li: ['Kotlin 2.4 y Compose Multiplatform 1.12.', 'Mide el uso de cada app y aplica los bloqueos en el propio teléfono.'] },
+  web: { c: 'var(--green)', t: 'Portal web', li: ['React 19 y Vite 6, con CSS nativo y gráficos SVG.', 'Consulta y ajusta los datos desde el navegador.'] },
+  api: { c: 'var(--cyan)', t: 'Backend FastAPI', li: ['FastAPI ≥0.115 en Python 3.12, sobre Azure App Service.', 'Autenticación JWT, persistencia y motor de riesgo de recaída.'] },
+  sql: { c: 'var(--violet)', t: 'Azure SQL Serverless', li: ['General Purpose, Gen5, 2 vCores.', 'Almacenamiento relacional de cuentas, métricas y planes.'] },
+  claude: { c: 'var(--teal)', t: 'API de Claude', li: ['Servicio de apoyo: explica el plan con la voz de Foqui.'] },
+  func: { c: 'var(--teal)', t: 'Azure Functions', li: ['Python 3.11. Calcula el ajuste semanal por una ruta independiente del backend.'] },
+  blob: { c: 'var(--teal)', t: 'Blob Storage', li: ['Servicio de apoyo: guarda las fotos de perfil.'] },
+  swa: { c: 'var(--teal)', t: 'Static Web Apps', li: ['Entrega estática: sirve el portal web.'] }
 };
 const detail = document.getElementById('detail');
 function showNode(k) {
@@ -897,21 +900,32 @@ document.querySelectorAll('#diagram .node').forEach(b => b.onclick = () => { sho
 showNode('api');
 function drawLines() {
   const box = id => { const e = document.getElementById('n-' + id); return { l: e.offsetLeft, t: e.offsetTop, r: e.offsetLeft + e.offsetWidth, b: e.offsetTop + e.offsetHeight, cy: e.offsetTop + e.offsetHeight / 2, cx: e.offsetLeft + e.offsetWidth / 2 }; };
-  const h = (a, b) => { const A = box(a), B = box(b), m = (A.r + B.l) / 2; return `M${A.r} ${A.cy} C${m} ${A.cy} ${m} ${B.cy} ${B.l} ${B.cy}`; };
-  const api = box('api'), sql = box('sql'), and = box('android');
-  document.getElementById('lines').innerHTML = `
+  const cv = (x1, y1, x2, y2) => { const m = (x1 + x2) / 2; return `M${x1} ${y1} C${m} ${y1} ${m} ${y2} ${x2} ${y2}`; };
+  const A = box('api'), and = box('android'), web = box('web'), sql = box('sql'), cl = box('claude'), bl = box('blob'), sw = box('swa');
+  const COL = { a: '#f59e0b', g: '#5ee0b0', v: '#c4b5fd', t: '#67e8f9' };
+  const mk = Object.entries(COL).map(([k, c]) => `<marker id="ar-${k}" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="${c}"/></marker>`).join('');
+  const main = (d, k, both) => `<path d="${d}" stroke="${COL[k]}" stroke-width="2.2" marker-end="url(#ar-${k})" ${both ? `marker-start="url(#ar-${k})"` : ''} style="filter:drop-shadow(0 0 4px ${COL[k]})"/><path d="${d}" stroke="#fff" stroke-width="1.4" opacity=".35" class="flow"/>`;
+  const sup = (d) => `<path d="${d}" stroke="${COL.t}" stroke-width="1.5" stroke-dasharray="4 5" opacity=".75" marker-end="url(#ar-t)"/>`;
+  const badge = (x, y, n) => `<g><circle cx="${x}" cy="${y}" r="8.5" fill="#f59e0b" style="filter:drop-shadow(0 0 5px #f59e0b)"/><text x="${x}" y="${y + 3.6}" text-anchor="middle" font-size="10.5" font-weight="800" fill="#0b1322">${n}</text></g>`;
+  // 1 · App → backend, 3 · backend → App
+  const p1 = cv(and.r, and.cy - 7, A.l, A.cy - 14), p3 = cv(A.l, A.cy - 4, and.r, and.cy + 7);
+  const p2 = cv(web.r, web.cy + 7, A.l, A.cy + 14), p3b = cv(A.l, A.cy + 4, web.r, web.cy - 7);
+  const mx = (and.r + A.l) / 2;
+  document.getElementById('lines').innerHTML = `<defs>${mk}</defs>
     <g fill="none" stroke-linecap="round">
-      <path d="${h('android', 'api')}" stroke="#f59e0b" stroke-width="2.5" class="flow" style="filter:drop-shadow(0 0 4px #f59e0b)"/>
-      <path d="${h('web', 'api')}" stroke="#5ee0b0" stroke-width="2.5" class="flow" style="filter:drop-shadow(0 0 4px #5ee0b0)"/>
-      <path d="M${api.cx} ${api.b} V ${sql.t}" stroke="#c4b5fd" stroke-width="2.5" class="flow" style="filter:drop-shadow(0 0 4px #c4b5fd)"/>
-      <path d="${h('api', 'claude')}" stroke="#67e8f9" stroke-width="1.5" stroke-dasharray="4 6" opacity=".7"/>
-      <path d="${h('api', 'func')}" stroke="#67e8f9" stroke-width="1.5" stroke-dasharray="4 6" opacity=".7"/>
-      <path d="${h('api', 'blob')}" stroke="#67e8f9" stroke-width="1.5" stroke-dasharray="4 6" opacity=".7"/>
+      ${main(p1, 'a')}${main(p3, 'a')}
+      ${main(p2, 'g')}${main(p3b, 'g')}
+      ${main(`M${A.r} ${sql.cy} H ${sql.l}`, 'v', true)}
+      ${sup(`M${A.cx} ${A.t} V ${cl.b + 2}`)}
+      ${sup(cv(A.r, A.t + 12, bl.l, bl.cy))}
+      ${sup(cv(sw.l, sw.cy, web.r, web.b - 10))}
     </g>
-    <g font-family="Inter" font-size="11" font-weight="700" fill="#94a3b8">
-      <text x="${api.cx + 8}" y="${(api.b + sql.t) / 2 + 4}">TLS</text>
-      <text x="${(and.r + api.l) / 2 + 8}" y="${(and.cy + api.cy) / 2 - 6}">HTTPS</text>
-    </g>`;
+    <g font-family="Inter" font-weight="800">
+      ${badge(mx - 8, (and.cy + A.cy) / 2 - 22, 1)}${badge(mx + 10, (and.cy + A.cy) / 2 + 2, 3)}
+      ${badge(mx - 8, (web.cy + A.cy) / 2 + 22, 2)}${badge(mx + 10, (web.cy + A.cy) / 2 - 2, 3)}
+      ${badge((A.r + sql.l) / 2, sql.cy - 14, 4)}
+    </g>
+    <text x="${(sw.l + web.r) / 2 - 4}" y="${sw.b + 4}" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="700" fill="#94a3b8">entrega estática</text>`;
 }
 drawLines(); document.fonts && document.fonts.ready.then(drawLines);
 
