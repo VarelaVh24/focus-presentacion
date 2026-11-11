@@ -261,6 +261,63 @@ input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 
 .end p { font-size: 16px; max-width: 400px; margin-top: 6px; }
 .end .url { margin-top: 14px; font-size: 13px; color: var(--cyan); word-break: break-all; }
 
+/* Versión de 6 diapositivas */
+.opp { margin-top: 22px; font-size: 20px; font-weight: 600; color: var(--text); max-width: 1000px; }
+.slide > .src { margin-top: 10px; }
+.sol { display: grid; grid-template-columns: 1fr 300px; gap: 36px; flex: 1; min-height: 0; max-width: 1090px; }
+.sol-left { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.flips.sm { height: 214px; gap: 14px; }
+.flips.sm .face { padding: 16px 18px; }
+.flips.sm .ico { width: 42px; height: 42px; margin-bottom: 10px; }
+.flips.sm .ico svg { width: 22px; height: 22px; }
+.flips.sm h3 { font-size: 18px; }
+.flips.sm p { font-size: 14px; }
+.flips.sm .big { font-size: 38px; }
+.sol .exit { margin-top: 0; font-size: 15px; }
+.ai { display: grid; grid-template-columns: 430px 1fr; gap: 22px; flex: 1; min-height: 0; max-width: 1080px; }
+.techs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-content: start; }
+.tech { --c: var(--amber); text-align: left; padding: 14px 16px; border-radius: 16px; background: rgba(15,23,42,.6); border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); display: grid; gap: 4px; transition: border-color .2s, box-shadow .2s, transform .2s, background .2s; }
+.tech:hover { transform: translateY(-2px); border-color: var(--c); }
+.tech.on { border-color: var(--c); background: color-mix(in srgb, var(--c) 12%, rgba(15,23,42,.7)); box-shadow: 0 0 22px color-mix(in srgb, var(--c) 40%, transparent); }
+.tech b { font-size: 15px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+.tech b::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); flex: none; }
+.tech span { font-size: 13px; color: var(--c); font-weight: 700; }
+.tech small { font-size: 12.5px; color: var(--text-3); line-height: 1.35; }
+.aipanel { display: flex; flex-direction: column; min-height: 0; }
+.ai-tag { font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--c); text-shadow: 0 0 8px var(--c); }
+.ai-q { font-size: 21px; margin: 6px 0 4px; }
+.ai-big { font-size: 36px; font-weight: 900; letter-spacing: -.02em; color: var(--c); text-shadow: 0 0 18px color-mix(in srgb, var(--c) 70%, transparent); line-height: 1.1; }
+.ai-p { font-size: 15px; margin-top: 6px; }
+.ai-viz { margin-top: 14px; }
+.ai-viz .bar { grid-template-columns: 190px 1fr 74px; font-size: 14px; }
+.ai-viz .bar .f { background: var(--c); box-shadow: 0 0 10px var(--c); }
+.ai-viz .bar.dim .f { background: var(--input); box-shadow: none; }
+.ai-viz svg { width: 100%; height: 190px; overflow: visible; }
+.riskmini { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; align-items: center; }
+.riskmini .sliders { gap: 8px; }
+.riskmini .gauge { width: 230px; height: 134px; }
+.riskmini .level { font-size: 22px; }
+.techgrid { display: grid; grid-template-columns: 580px 1fr; gap: 22px; flex: 1; min-height: 0; max-width: 1090px; }
+.detail-strip { position: absolute; left: 20px; right: 20px; bottom: 16px; padding: 12px 14px; border-radius: 12px; border: 1px solid color-mix(in srgb, var(--c, var(--cyan)) 45%, transparent); background: rgba(11,19,34,.7); font-size: 13.5px; line-height: 1.45; color: var(--text-2); }
+.detail-strip b { color: var(--c, var(--cyan)); }
+.techright { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.datacard p { font-size: 14.5px; margin-top: 10px; }
+.miniflow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 10px; }
+.miniflow span { --c: var(--amber); padding: 6px 10px; border-radius: 10px; font-size: 13px; font-weight: 700; color: var(--c); border: 1px solid color-mix(in srgb, var(--c) 50%, transparent); box-shadow: 0 0 10px color-mix(in srgb, var(--c) 25%, transparent); }
+.miniflow em { font-style: normal; color: var(--text-3); }
+.trust2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.trust2 .card { padding: 14px 16px; }
+.trust2 .ico { width: 36px; height: 36px; border-radius: 11px; margin-bottom: 8px; }
+.trust2 .ico svg { width: 19px; height: 19px; }
+.trust2 h3 { font-size: 15px; margin-bottom: 2px; }
+.trust2 p { font-size: 13px; line-height: 1.4; }
+.finale { align-items: center; justify-content: center; text-align: center; gap: 8px; padding-bottom: 80px; }
+.finale .foqui { width: 210px; height: 210px; cursor: pointer; }
+.finale h1 { font-size: 92px; margin: 6px 0 14px; }
+.fin-quote { font-size: 20px; max-width: 620px; color: var(--text-2); }
+.finale .status { margin-top: 14px; }
+.finale .url { font-size: 13px; color: var(--cyan); }
+
 /* Foqui */
 .foqui { overflow: visible; filter: drop-shadow(0 0 1.5px rgba(203,213,225,.9)) drop-shadow(0 0 10px rgba(245,158,11,.55)); }
 .foqui .eye { transform-box: view-box; transform-origin: 60px 56px; animation: blink 5s infinite; }
@@ -319,33 +376,10 @@ input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 
     </div>
   </section>
 
-  <!-- 2 · Qué es -->
-  <section class="slide" data-foqui="tranquilo" data-glow="cyan" data-say="¡Hola! Soy Foqui. No vengo a regañar: vengo a acompañarte para que tú decidas cómo usar tu teléfono.">
-    <div class="eyebrow">01 · De qué trata</div>
-    <h2>¿Qué es <span class="neon">FOCUS!</span>?</h2>
-    <div class="grid what-grid">
-      <div>
-        <p class="def">Un sistema de bienestar digital que ayuda a <em>reducir de manera gradual</em> el tiempo en pantalla mediante <em>fricción reflexiva</em>, <em>límites que la propia persona elige</em> y el acompañamiento de una mascota, <em>Foqui</em>.</p>
-        <div class="pillars">
-          <span class="chip">⏸ Pausa consciente</span>
-          <span class="chip c-cyan" style="--c:var(--cyan)">🎯 Límites propios</span>
-          <span class="chip" style="--c:var(--green)">📉 Reducción gradual</span>
-          <span class="chip" style="--c:var(--violet)">🤖 Acompañamiento</span>
-        </div>
-      </div>
-      <div class="grid comp">
-        <div class="card hov c-amber"><div class="ico" style="--c:var(--amber)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></div><h3>App Android</h3><p>Mide el uso y aplica las pausas y límites en el teléfono.</p></div>
-        <div class="card hov c-cyan"><div class="ico" style="--c:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 18a5 5 0 1 1 .9-9.9A6 6 0 0 1 19 10a4 4 0 0 1-1 7.9z"/></svg></div><h3>API en la nube</h3><p>Guarda los datos y calcula el resumen y el riesgo.</p></div>
-        <div class="card hov c-green"><div class="ico" style="--c:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg></div><h3>Portal web</h3><p>Muestra las mismas cifras desde cualquier navegador.</p></div>
-        <div class="card hov c-violet"><div class="ico" style="--c:var(--violet)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></div><h3>Base de datos</h3><p>Azure SQL en la nube de Microsoft.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 3 · El problema -->
+  <!-- 2 · El problema y la oportunidad -->
   <section class="slide" data-foqui="serio" data-glow="red" data-say="Toca cada mecanismo. Las apps compiten por tu atención con trucos muy bien conocidos.">
-    <div class="eyebrow" style="--c:var(--red)">02 · El problema</div>
-    <p class="quote">El problema no es el teléfono, sino el uso que <span class="neon">deja de ser una decisión</span>: abrir una app por inercia y notar media hora después que el tiempo ya pasó.</p>
+    <div class="eyebrow" style="--c:var(--red)">01 · El problema</div>
+    <p class="quote" style="font-size:30px">El problema no es el teléfono, sino el uso que <span class="neon">deja de ser una decisión</span>: abrir una app por inercia y notar media hora después que el tiempo ya pasó.</p>
     <div class="mech" id="mech">
       <span class="chip" style="--c:var(--red)" data-m="Las plataformas incorporan a propósito la recompensa variable del scroll infinito en su diseño.">↻ Scroll infinito</span>
       <span class="chip" style="--c:var(--red)" data-m="Los videos personalizados activan con más intensidad zonas del cerebro ligadas a la recompensa.">🎲 Recompensas variables</span>
@@ -353,80 +387,38 @@ input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 
       <span class="chip" style="--c:var(--red)" data-m="Los juegos competitivos incorporan bucles de progreso de forma deliberada en su diseño.">🔥 Rachas</span>
       <span class="chip" style="--c:var(--red)" data-m="Alternar entre tareas tiene un costo medible: más estrés, frustración y presión de tiempo.">🔔 Notificaciones</span>
     </div>
-    <div class="tabs" role="tablist">
-      <button class="on" data-tab="ninos">Infancias y adolescencia</button>
-      <button data-tab="adultos">Personas adultas</button>
+    <div class="grid stats" style="margin-top:26px">
+      <div class="card hov c-amber stat"><div class="num neon" data-count="104.9" data-dec="1" data-suf=" M">0</div><p>personas usan internet en México</p></div>
+      <div class="card hov c-cyan stat"><div class="num neon-c" data-count="97.3" data-dec="1" data-suf=" %">0</div><p>se conecta desde un smartphone</p></div>
+      <div class="card hov c-violet stat"><div class="num" style="color:var(--violet);text-shadow:0 0 18px var(--violet)" data-count="6" data-dec="0" data-suf=" h">0</div><p>al día conectados, en promedio; 24 % pasa más de 9 h</p></div>
+      <div class="card hov c-green stat"><div class="num neon-g" data-count="80.4" data-dec="1" data-suf=" %">0</div><p>de quienes usan smartphone entra a redes sociales</p></div>
     </div>
-    <div class="tabpanel on" id="ninos">
-      <div class="card hov c-red"><h3>Recompensa</h3><p>Recibir muchos likes y ver videos personalizados activa el circuito de recompensa del cerebro.</p></div>
-      <div class="card hov c-red"><h3>Sueño</h3><p>Más pantalla se asocia con dormir más tarde y menos; la luz antes de dormir suprime la melatonina.</p></div>
-      <div class="card hov c-red"><h3>Movimiento</h3><p>El tiempo en el teléfono se resta de actividad física, juego al aire libre y sueño.</p></div>
-    </div>
-    <div class="tabpanel" id="adultos">
-      <div class="card hov c-red"><h3>Fragmentación</h3><p>Saltar entre WhatsApp, Slack y redes tiene un costo: más estrés, frustración y presión de tiempo.</p></div>
-      <div class="card hov c-red"><h3>Desvelo</h3><p>No irse a la cama a la hora prevista para “recuperar” por la noche el tiempo propio.</p></div>
-      <div class="card hov c-red"><h3>Agotamiento</h3><p>El descanso insuficiente y la jornada fragmentada alimentan el burnout.</p></div>
-    </div>
+    <p class="opp">Mensajería, redes y video son lo que más se usa, y son justo las apps que <span class="neon">FOCUS!</span> permite vigilar.</p>
+    <p class="src">Fuentes: INEGI, ENDUTIH 2025 · Asociación de Internet MX, 2026.</p>
   </section>
 
-  <!-- 4 · Impacto social -->
-  <section class="slide" data-foqui="serio" data-glow="cyan" data-say="Mensajería, redes y video son lo que más se usa, y coinciden con las apps que FOCUS! permite vigilar.">
-    <div class="eyebrow" style="--c:var(--cyan)">03 · Impacto social · México</div>
-    <h2>Un problema de escala nacional</h2>
-    <div class="grid stats">
-      <div class="card hov c-amber stat"><div class="num neon" data-count="104.9" data-dec="1" data-suf=" M">0</div><p>personas usan internet en México (86.1 % de la población de 6 años y más)</p></div>
-      <div class="card hov c-cyan stat"><div class="num neon-c" data-count="97.3" data-dec="1" data-suf=" %">0</div><p>de quienes usan internet se conectan desde un smartphone</p></div>
-      <div class="card hov c-green stat"><div class="num neon-g" data-count="97.6" data-dec="1" data-suf=" %">0</div><p>de las personas de 15 a 24 años usan internet, el grupo con mayor uso</p></div>
-      <div class="card hov c-violet stat"><div class="num" style="color:var(--violet);text-shadow:0 0 18px var(--violet)" data-count="78.3" data-dec="1" data-suf=" %">0</div><p>de los hogares tienen internet</p></div>
-    </div>
-    <div class="grid lower">
-      <div class="card c-amber">
-        <h3 style="font-size:15px; color:var(--text-3)">Qué hacen en el smartphone</h3>
-        <div class="bar"><span>Mensajería</span><div class="t"><div class="f" data-w="90.6"></div></div><b>90.6 %</b></div>
-        <div class="bar"><span>Redes sociales</span><div class="t"><div class="f" data-w="80.4"></div></div><b>80.4 %</b></div>
-        <div class="bar"><span>Audio y video</span><div class="t"><div class="f" data-w="77.8"></div></div><b>77.8 %</b></div>
-        <div class="bar"><span>Juegos</span><div class="t"><div class="f" data-w="33.3"></div></div><b>33.3 %</b></div>
-      </div>
-      <div class="card c-cyan hours">
-        <div class="big neon-c">≈ 6 h</div>
-        <p>al día conectados; 55 % pasa más de 5 h y 24 % más de 9 h.</p>
-        <p class="src" style="margin-top:12px">Asociación de Internet MX, 2026. La ENDUTIH no mide horas de conexión.</p>
-      </div>
-    </div>
-    <p class="src" style="margin-top:12px">Fuente: INEGI, ENDUTIH 2025 · muestra de 65 057 viviendas.</p>
-  </section>
-
-  <!-- 5 · Objetivo -->
-  <section class="slide" data-foqui="tranquilo" data-glow="amber" data-say="Toca cada tarjeta. Y tranquilo: el bloqueo siempre tiene salida.">
-    <div class="eyebrow">04 · Objetivo</div>
-    <p class="goal">Que cada persona pueda decidir <span class="neon">cuánto, cuándo y para qué</span> usa su teléfono. FOCUS! no prohíbe: <span class="neon-c">acompaña, no castiga.</span></p>
-    <div class="grid flips">
-      <div class="flip" tabindex="0"><div class="flip-in">
-        <div class="face card c-amber"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/></svg></div><div class="n">PRINCIPIO 1</div><h3>Fricción reflexiva</h3><p>Una pausa consciente antes de abrir una app vigilada.</p><div class="more">Toca para ver más →</div></div>
-        <div class="face back card c-amber"><h3>Fricción reflexiva</h3><p>Pausa de 5, 10 o 20 s según el nivel, con opción de salir o continuar.</p><div class="big">−57 %</div><p>aperturas en un experimento con 280 personas durante 6 semanas. Poder desistir fue lo que más efecto tuvo.</p></div>
-      </div></div>
-      <div class="flip" tabindex="0"><div class="flip-in">
-        <div class="face card c-cyan"><div class="ico" style="--c:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div><div class="n">PRINCIPIO 2</div><h3>Límites intencionales</h3><p>La persona decide qué apps vigilar, cuántos minutos y cuántas aperturas.</p><div class="more">Toca para ver más →</div></div>
-        <div class="face back card c-cyan"><h3>Límites intencionales</h3><p>El plan reduce el límite de forma gradual.</p><div class="big">Lógica difusa</div><p>Un controlador difuso calcula el ajuste semanal con la adherencia y las pausas ignoradas.</p></div>
-      </div></div>
-      <div class="flip" tabindex="0"><div class="flip-in">
-        <div class="face card c-violet"><div class="ico" style="--c:var(--violet)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5a4.5 4.5 0 0 0 7 0M9 9.5h.01M15 9.5h.01"/></svg></div><div class="n">PRINCIPIO 3</div><h3>Acompañamiento</h3><p>Foqui muestra el estado de la semana de forma visual y pedagógica.</p><div class="more">Toca para ver más →</div></div>
-        <div class="face back card c-violet"><h3>Acompañamiento</h3><p>Cinco estados: Normal, Atenta, Enfocado, Feliz y Cansado.</p><div class="big" style="font-size:40px">IA que explica</div><p>Explica los resultados en tono cercano. No fija límites ni da consejos médicos.</p></div>
-      </div></div>
-    </div>
-    <div class="exit"><span class="chip" style="--c:var(--green)">🔓 Desbloqueo de emergencia · 5 min</span> El bloqueo siempre tiene salida: apps como WhatsApp también sirven para comunicaciones importantes.</div>
-  </section>
-
-  <!-- 6 · Cómo funciona -->
+  <!-- 3 · La solución -->
   <section class="slide" data-foqui="tranquilo" data-glow="cyan" data-say="¡Pruébalo! Elige un modo y toca una app del teléfono.">
-    <div class="eyebrow" style="--c:var(--cyan)">05 · Cómo funciona</div>
-    <h2 style="margin-bottom:20px">Así lo vive la persona</h2>
-    <div class="how">
-      <div class="steps">
-        <div class="card c-amber"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg></div><div><h3>1 · Elige qué apps vigilar</h3><p>Instagram, TikTok, YouTube, WhatsApp, Facebook, X, Netflix, Reddit y juegos como Clash Royale o Free Fire.</p></div></div>
-        <div class="card c-cyan"><div class="ico" style="--c:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg></div><div><h3>2 · Pausa al abrirlas</h3><p>Una pausa breve con la opción de salir o continuar.</p></div></div>
-        <div class="card c-red"><div class="ico" style="--c:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><div><h3>3 · Límite de minutos o aperturas</h3><p>Al pasarlo, la app se pausa. Siempre hay desbloqueo de emergencia.</p></div></div>
-        <div class="card c-green"><div class="ico" style="--c:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></div><div><h3>4 · Modo Foco</h3><p>Sesiones con apps silenciadas y sonido ambiental local.</p></div></div>
+    <div class="eyebrow" style="--c:var(--cyan)">02 · La solución</div>
+    <h2 style="margin-bottom:14px">Acompañar, <span class="neon-c">no castigar</span></h2>
+    <div class="sol">
+      <div class="sol-left">
+        <p class="def" style="font-size:20px">Un sistema de bienestar digital que ayuda a <em>reducir de manera gradual</em> el tiempo en pantalla, con <em>límites que la propia persona elige</em> y la compañía de <em>Foqui</em>.</p>
+        <div class="grid flips sm">
+          <div class="flip" tabindex="0"><div class="flip-in">
+            <div class="face card c-amber"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/></svg></div><h3>Pausa consciente</h3><p>Antes de abrir una app vigilada.</p><div class="more">Toca para ver más →</div></div>
+            <div class="face back card c-amber"><h3>Pausa consciente</h3><div class="big">−57 %</div><p>aperturas en un experimento con 280 personas durante 6 semanas.</p></div>
+          </div></div>
+          <div class="flip" tabindex="0"><div class="flip-in">
+            <div class="face card c-cyan"><div class="ico" style="--c:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div><h3>Límites propios</h3><p>Minutos y aperturas que la persona elige.</p><div class="more">Toca para ver más →</div></div>
+            <div class="face back card c-cyan"><h3>Límites propios</h3><div class="big">Gradual</div><p>El plan baja el límite poco a poco, semana a semana.</p></div>
+          </div></div>
+          <div class="flip" tabindex="0"><div class="flip-in">
+            <div class="face card c-violet"><div class="ico" style="--c:var(--violet)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5a4.5 4.5 0 0 0 7 0M9 9.5h.01M15 9.5h.01"/></svg></div><h3>Foqui acompaña</h3><p>Muestra cómo va la semana.</p><div class="more">Toca para ver más →</div></div>
+            <div class="face back card c-violet"><h3>Foqui acompaña</h3><div class="big">5 estados</div><p>Normal, Atenta, Enfocado, Feliz y Cansado.</p></div>
+          </div></div>
+        </div>
+        <div class="exit"><span class="chip" style="--c:var(--green)">🔓 Desbloqueo de emergencia · 5 min</span> El bloqueo siempre tiene salida.</div>
       </div>
       <div class="phonecol">
         <div class="modes" id="modes">
@@ -451,101 +443,71 @@ input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 
     </div>
   </section>
 
-  <!-- 7 · Cómo recopila los datos -->
-  <section class="slide" data-foqui="serio" data-glow="green" data-say="Presiona “Enviar lote” para ver el camino de los datos, del teléfono a la nube.">
-    <div class="eyebrow" style="--c:var(--green)">06 · Cómo recopila los datos</div>
-    <h2>Del teléfono a la nube, en lotes</h2>
-    <div class="pipe" id="pipe">
-      <div class="line"></div><div class="pk"></div><div class="pk"></div><div class="pk"></div>
-      <div class="node2" style="--c:var(--amber)"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></div><h3>Mide en el teléfono</h3><p>Minutos y aperturas por app, con el permiso que la persona concede.</p></div>
-      <div class="node2" style="--c:var(--cyan)"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></div><h3>Detecta la app al frente</h3><p>Sabe qué app se abrió, pero no puede leer su contenido.</p></div>
-      <div class="node2" style="--c:var(--violet)"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div><h3>Agrupa por día</h3><p>El día empieza a las 06:00, para que la noche cuente en la jornada que la originó.</p></div>
-      <div class="node2" style="--c:var(--teal)"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></div><h3>Envía un lote</h3><p>Una sola vez cada 6 h y solo con internet, en vez de enviar cada apertura.</p></div>
-      <div class="node2" style="--c:var(--green)"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 18a5 5 0 1 1 .9-9.9A6 6 0 0 1 19 10a4 4 0 0 1-1 7.9z"/><path d="M9 13l2 2 4-4"/></svg></div><h3>Guarda sin duplicar</h3><p>Cada lote reenvía 7 días: si un envío se pierde, el siguiente lo corrige.</p></div>
+  <!-- 4 · Inteligencia artificial -->
+  <section class="slide" data-foqui="serio" data-glow="violet" data-say="Seis técnicas de IA, cada una responde una pregunta distinta. Toca cada una para ver su resultado.">
+    <div class="eyebrow" style="--c:var(--violet)">03 · Inteligencia artificial</div>
+    <h2 style="margin-bottom:18px">Seis técnicas de IA, <span class="neon">una sola meta</span></h2>
+    <div class="ai">
+      <div class="techs" id="techs"></div>
+      <div class="card aipanel" id="aipanel">
+        <div class="ai-tag" id="aiTag"></div>
+        <h3 class="ai-q" id="aiQ"></h3>
+        <div class="ai-big" id="aiBig"></div>
+        <p class="ai-p" id="aiP"></p>
+        <div class="ai-viz" id="aiViz"></div>
+        <div class="riskmini" id="riskBlock" hidden>
+          <div class="sliders" id="sliders"></div>
+          <div class="gauge-card">
+            <svg class="gauge" viewBox="0 0 300 175" id="gauge"></svg>
+            <div class="level" id="level">Riesgo alto</div>
+            <div class="prob" id="prob"></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="grid data-lower">
-      <div class="card c-green yes"><h3 class="neon-g" style="font-size:17px">Lo que sí registra</h3><ul><li>Minutos de uso por app y por día</li><li>Número de aperturas</li><li>Pausas respetadas e ignoradas</li></ul></div>
-      <div class="card c-red no"><h3 style="font-size:17px; color:var(--red); text-shadow:0 0 10px var(--red)">Lo que nunca lee</h3><ul><li>Textos, mensajes ni contraseñas</li><li>Contenido alguno de otras apps</li><li>La IA no recibe nombres de apps ni horarios</li></ul></div>
-      <div class="go"><button class="btn" id="sendBtn">⇪ Enviar lote</button><span class="src" id="sendMsg" style="max-width:210px">Simula la sincronización de cada 6 horas.</span></div>
-    </div>
+    <p class="src" style="margin-top:12px">Los modelos se entrenaron con usuarios simulados, porque todavía no hay usuarios reales con semanas de historial. Se evalúan siempre con personas que el modelo nunca vio.</p>
   </section>
 
-  <!-- 8 · Estructura -->
-  <section class="slide" data-foqui="serio" data-glow="violet" data-say="Toca cada pieza del diagrama. El cálculo vive en la nube; el bloqueo, en el teléfono.">
-    <div class="eyebrow" style="--c:var(--violet)">07 · Estructura</div>
-    <h2>Cuatro componentes conectados</h2>
-    <div class="arch">
+  <!-- 5 · Tecnología y confianza -->
+  <section class="slide" data-foqui="tranquilo" data-glow="green" data-say="Toca cada pieza del diagrama. El cálculo vive en la nube; el bloqueo, en el teléfono.">
+    <div class="eyebrow" style="--c:var(--green)">04 · Tecnología y confianza</div>
+    <h2 style="margin-bottom:18px">En la nube, <span class="neon-g">sin invadir la privacidad</span></h2>
+    <div class="techgrid">
       <div class="card diagram c-violet" id="diagram">
         <div class="cloud">MICROSOFT AZURE</div>
         <svg class="lines" id="lines"></svg>
-        <button class="node" data-n="android" id="n-android" style="--c:var(--amber); left:24px; top:86px"><b>App Android</b><span>Kotlin + Compose</span></button>
-        <button class="node" data-n="web" id="n-web" style="--c:var(--green); left:24px; top:296px"><b>Portal web</b><span>React + Vite</span></button>
-        <button class="node on" data-n="api" id="n-api" style="--c:var(--cyan); left:250px; top:176px"><b>API FastAPI</b><span>Azure App Service</span></button>
-        <button class="node" data-n="sql" id="n-sql" style="--c:var(--violet); left:250px; top:344px"><b>Azure SQL</b><span>Base de datos</span></button>
-        <button class="node small" data-n="claude" id="n-claude" style="--c:var(--teal); left:478px; top:66px"><b>API de Claude</b><span>Texto de Foqui</span></button>
-        <button class="node small" data-n="func" id="n-func" style="--c:var(--teal); left:478px; top:186px"><b>Azure Functions</b><span>Ajuste semanal</span></button>
-        <button class="node small" data-n="blob" id="n-blob" style="--c:var(--teal); left:478px; top:306px"><b>Blob Storage</b><span>Fotos de perfil</span></button>
+        <button class="node" data-n="android" id="n-android" style="--c:var(--amber); left:20px; top:64px; width:152px"><b>App Android</b><span>Kotlin + Compose</span></button>
+        <button class="node" data-n="web" id="n-web" style="--c:var(--green); left:20px; top:244px; width:152px"><b>Portal web</b><span>React + Vite</span></button>
+        <button class="node on" data-n="api" id="n-api" style="--c:var(--cyan); left:212px; top:154px; width:160px"><b>API FastAPI</b><span>Azure App Service</span></button>
+        <button class="node" data-n="sql" id="n-sql" style="--c:var(--violet); left:212px; top:284px; width:160px"><b>Azure SQL</b><span>Base de datos</span></button>
+        <button class="node small" data-n="claude" id="n-claude" style="--c:var(--teal); left:412px; top:52px; width:146px"><b>API de Claude</b><span>Texto de Foqui</span></button>
+        <button class="node small" data-n="func" id="n-func" style="--c:var(--teal); left:412px; top:160px; width:146px"><b>Azure Functions</b><span>Ajuste semanal</span></button>
+        <button class="node small" data-n="blob" id="n-blob" style="--c:var(--teal); left:412px; top:268px; width:146px"><b>Blob Storage</b><span>Fotos de perfil</span></button>
+        <div class="detail-strip" id="detail"></div>
       </div>
-      <div class="card detail" id="detail"></div>
-    </div>
-  </section>
-
-  <!-- 9 · Riesgo de recaída -->
-  <section class="slide" data-foqui="serio" data-glow="amber" data-say="Mueve los controles y mira mi cara: el cumplimiento de la semana es lo que más pesa.">
-    <div class="eyebrow">08 · Inteligencia</div>
-    <h2>Predecir la recaída antes de que pase</h2>
-    <div class="risk">
-      <div class="card sliders c-amber" id="sliders"></div>
-      <div class="card gauge-card c-cyan">
-        <svg class="gauge" viewBox="0 0 300 175" id="gauge"></svg>
-        <div class="level" id="level">Riesgo alto</div>
-        <div class="prob" id="prob">p = 0.805</div>
-        <div class="metrics">
-          <span class="chip" style="--c:var(--cyan)">Regresión logística · 7 variables</span>
-          <span class="chip" style="--c:var(--green)">AUC 0.848</span>
-          <span class="chip" style="--c:var(--violet)">Exactitud 0.761</span>
+      <div class="techright">
+        <div class="card c-green datacard">
+          <h3 class="neon-g" style="font-size:17px">Cómo recopila los datos</h3>
+          <div class="miniflow"><span style="--c:var(--amber)">Mide en el teléfono</span><em>→</em><span style="--c:var(--teal)">Lote cada 6 h</span><em>→</em><span style="--c:var(--green)">Nube</span></div>
+          <p>Minutos y aperturas por app. <b style="color:var(--red)">Nunca</b> lee textos, mensajes ni contraseñas.</p>
         </div>
-        <p class="warn">Predice si la persona se pasará de su límite la próxima semana. Entrenado con 22 100 semanas sintéticas: prueba el método, aún no el comportamiento real.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 10 · Confianza -->
-  <section class="slide" data-foqui="tranquilo" data-glow="green" data-say="Seguridad, privacidad y responsabilidad: tres cosas que no se negocian.">
-    <div class="eyebrow" style="--c:var(--green)">09 · Confianza</div>
-    <h2>Seguro, privado y responsable</h2>
-    <div class="grid trust">
-      <div class="card hov c-cyan"><div class="ico" style="--c:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><h3>Contraseñas protegidas</h3><p>Se guardan con hash bcrypt; nunca en texto plano.</p></div>
-      <div class="card hov c-violet"><div class="ico" style="--c:var(--violet)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/></svg></div><h3>Cada quien ve lo suyo</h3><p>La identidad sale de un token firmado, nunca de la dirección: nadie puede ver otra cuenta.</p></div>
-      <div class="card hov c-amber"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1l22 22M16.7 16.7A10 10 0 0 1 2 12M5 5a10 10 0 0 1 14 0M8.5 8.5a5 5 0 0 1 7 0M12 20h.01"/></svg></div><h3>Funciona sin internet</h3><p>El bloqueo corre completo en el teléfono, sin esperar al servidor.</p></div>
-      <div class="card hov c-teal"><div class="ico" style="--c:var(--teal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><path d="M4 4l16 16"/></svg></div><h3>No lee contenido</h3><p>Solo sabe qué app está al frente; el dato se procesa en el teléfono.</p></div>
-      <div class="card hov c-green"><div class="ico" style="--c:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg></div><h3>Se recupera sola</h3><p>La base de datos se pausa para ahorrar costos; al despertar, la app y el portal reintentan sin que la persona lo note.</p></div>
-      <div class="card hov c-red"><div class="ico" style="--c:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/></svg></div><h3>Responsable</h3><p>No es tratamiento ni diagnóstico. Ante malestar serio, sugiere apoyo profesional.</p></div>
-    </div>
-  </section>
-
-  <!-- 11 · Cierre -->
-  <section class="slide" data-foqui="tranquilo" data-glow="amber" data-hide-buddy>
-    <div class="eyebrow">10 · Estado y próximos pasos</div>
-    <h2>Listo para crecer</h2>
-    <div class="close">
-      <div>
-        <div class="status">Desplegado y funcional en Microsoft Azure</div>
-        <p style="font-size:15px; margin-bottom:16px">Para una publicación abierta faltan pasos acotados:</p>
-        <div class="road">
-          <div class="card c-amber"><p>Cumplir la divulgación de Google Play: aviso destacado y consentimiento</p></div>
-          <div class="card c-cyan"><p>Validar el modelo de riesgo con datos reales y consentidos</p></div>
-          <div class="card c-violet"><p>Medir en dispositivos reales el tiempo total del bloqueo</p></div>
-          <div class="card c-green"><p>Automatizar la configuración de seguridad en los despliegues</p></div>
+        <div class="trust2">
+          <div class="card hov c-cyan"><div class="ico" style="--c:var(--cyan)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><h3>Contraseñas protegidas</h3><p>Guardadas con hash, nunca en texto plano.</p></div>
+          <div class="card hov c-violet"><div class="ico" style="--c:var(--violet)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/></svg></div><h3>Cada quien ve lo suyo</h3><p>Nadie puede ver otra cuenta.</p></div>
+          <div class="card hov c-amber"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1l22 22M16.7 16.7A10 10 0 0 1 2 12M5 5a10 10 0 0 1 14 0M8.5 8.5a5 5 0 0 1 7 0M12 20h.01"/></svg></div><h3>Funciona sin internet</h3><p>El bloqueo corre en el teléfono.</p></div>
+          <div class="card hov c-red"><div class="ico" style="--c:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/></svg></div><h3>Responsable</h3><p>No es tratamiento ni diagnóstico.</p></div>
         </div>
       </div>
-      <div class="card end c-amber">
-        <div class="bob"><svg class="foqui" id="endFoqui" data-expr="tranquilo" viewBox="0 0 120 120" role="button" aria-label="Foqui"></svg></div>
-        <h3 class="neon">¡Gracias!</h3>
-        <p>Una pausa breve y la posibilidad de desistir pueden cambiar la conducta de manera medible.</p>
-        <div class="url">Portal web · green-moss-07816e210.4.azurestaticapps.net</div>
-      </div>
     </div>
+  </section>
+
+  <!-- 6 · Cierre -->
+  <section class="slide finale" data-foqui="tranquilo" data-glow="amber" data-hide-buddy>
+    <div class="bob"><svg class="foqui" id="endFoqui" data-expr="tranquilo" viewBox="0 0 120 120" role="button" aria-label="Foqui"></svg></div>
+    <h1 class="neon flicker">¡Gracias!</h1>
+    <p class="fin-quote">Una pausa breve y la posibilidad de desistir pueden cambiar la conducta de manera medible.</p>
+    <div class="status">Desplegado y funcional en Microsoft Azure</div>
+    <div class="url">Portal web · green-moss-07816e210.4.azurestaticapps.net</div>
   </section>
 
   <div id="buddy" class="hidden">
@@ -810,7 +772,7 @@ function onEnter(s) {
     (function tick(t) { const k = Math.min(1, (t - t0) / 1300), v = to * (1 - Math.pow(1 - k, 3)); el.innerHTML = v.toLocaleString('es-MX', { minimumFractionDigits: dec, maximumFractionDigits: dec }) + `<small>${suf}</small>`; if (k < 1) requestAnimationFrame(tick); })(t0);
   });
   s.querySelectorAll('.bar .f').forEach(f => { f.style.width = '0'; setTimeout(() => f.style.width = f.dataset.w + '%', 120); });
-  if (s.contains(gauge)) risk();
+  if (s.contains(gauge)) showTech(curTech);
   if (s.contains(document.getElementById('diagram'))) requestAnimationFrame(drawLines);
 }
 
@@ -870,17 +832,6 @@ function openApp(name, bg) {
   }
 }
 
-/* ---------- 7 · Enviar lote ---------- */
-let sending = false;
-document.getElementById('sendBtn').onclick = () => {
-  if (sending) return; sending = true;
-  const pipe = document.getElementById('pipe'), nodes = [...pipe.querySelectorAll('.node2')], msg = document.getElementById('sendMsg');
-  pipe.classList.remove('run'); void pipe.offsetWidth; pipe.classList.add('run');
-  msg.textContent = 'Enviando un lote con 7 días…'; react('serio', 'Allá van los datos del día, agrupados en un solo envío.');
-  nodes.forEach((n, k) => setTimeout(() => { n.classList.add('lit'); setTimeout(() => n.classList.remove('lit'), 700); }, 150 + k * 560));
-  setTimeout(() => { msg.textContent = '✓ Guardado sin duplicados.'; react('tranquilo', '¡Listo! Si un envío falla, el siguiente lo corrige solo.'); sending = false; }, 3100);
-};
-
 /* ---------- 8 · Estructura ---------- */
 const NODES = {
   android: { c: 'var(--amber)', t: 'App Android', s: 'Kotlin · Compose Multiplatform', li: ['Mide el uso de cada app en el propio teléfono.', 'Aplica pausas y bloqueos sin depender de la red.', 'Envía sus datos en lotes cada 6 horas.'] },
@@ -896,9 +847,8 @@ function showNode(k) {
   const n = NODES[k];
   document.querySelectorAll('#diagram .node').forEach(b => b.classList.toggle('on', b.dataset.n === k));
   detail.style.setProperty('--c', n.c);
-  detail.innerHTML = `<h3>${n.t}</h3><div class="sub">${n.s}</div><ul>${n.li.map(x => `<li>${x}</li>`).join('')}</ul>
-    <div class="key"><b>Decisión clave:</b> los cálculos viven en la nube, así el teléfono y la web muestran exactamente las mismas cifras. El bloqueo es la excepción: corre en el teléfono para funcionar sin red.</div>`;
-  detail.animate([{ opacity: .3, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], { duration: 300 });
+  detail.innerHTML = `<b>${n.t}</b> · ${n.li.join(' ')}`;
+  detail.animate([{ opacity: .3 }, { opacity: 1 }], { duration: 300 });
 }
 document.querySelectorAll('#diagram .node').forEach(b => b.onclick = () => { showNode(b.dataset.n); anim(buddyWrap, 'hop'); });
 showNode('api');
@@ -927,8 +877,8 @@ const VARS = [
   { k: 'adherencia', t: 'Cumplimiento de la semana', w: -1.749, mu: .851, sd: .195, min: 0, max: 1, step: .01, v: .72, fmt: v => Math.round(v * 100) + ' %', d: 'Qué tanto respetó sus límites', show: true },
   { k: 'tendencia', w: .424, mu: -.005, sd: .145, v: -.08 },
   { k: 'ignoradas', t: 'Pausas ignoradas', w: .291, mu: .436, sd: .170, min: 0, max: 1, step: .01, v: .55, fmt: v => Math.round(v * 100) + ' %', d: 'Veces que siguió de largo tras la pausa', show: true },
-  { k: 'nocturno', t: 'Uso nocturno', w: .288, mu: .258, sd: .155, min: 0, max: 1, step: .01, v: .38, fmt: v => Math.round(v * 100) + ' %', d: 'Parte del uso entre 22:00 y 05:59', show: true },
-  { k: 'foco', t: 'Sesiones de foco completadas', w: -.468, mu: .340, sd: .199, min: 0, max: 1, step: .01, v: .25, fmt: v => Math.round(v * 100) + ' %', d: 'Completadas entre las iniciadas', show: true },
+  { k: 'nocturno', t: 'Uso nocturno', w: .288, mu: .258, sd: .155, min: 0, max: 1, step: .01, v: .38, fmt: v => Math.round(v * 100) + ' %', d: 'Parte del uso entre 22:00 y 05:59' },
+  { k: 'foco', t: 'Sesiones de foco completadas', w: -.468, mu: .340, sd: .199, min: 0, max: 1, step: .01, v: .25, fmt: v => Math.round(v * 100) + ' %', d: 'Completadas entre las iniciadas' },
   { k: 'cambio', w: -.704, mu: -4.129, sd: 4.176, v: -2 },
   { k: 'racha', t: 'Racha', w: -.515, mu: 2.166, sd: 3.086, min: 0, max: 12, step: 1, v: 0, fmt: v => v + (v === 1 ? ' semana' : ' semanas'), d: 'Semanas seguidas cumpliendo', show: true }
 ];
@@ -968,6 +918,70 @@ function risk() {
   lastLv = lv[0];
 }
 risk();
+
+/* ---------- Técnicas de IA (reporte "Técnicas de inteligencia artificial") ---------- */
+const TECH = [
+  { k: 'difusa', c: 'var(--amber)', n: 'Lógica difusa', q: '¿Cuánto ajustar el límite la próxima semana?', r: '−10 % a +5 %', big: '−10 % a +5 %',
+    p: 'Ajusta el plan cada semana de forma gradual, según qué tanto se cumplió la meta y cuántas pausas se ignoraron.',
+    viz: () => bars([['Cumple y respeta las pausas', 10, '−10 %'], ['Cumple, pero ignora el 70 %', 5, '−5 %'], ['Le está costando', 5, '+5 %', true]], 12),
+    say: 'Si la persona va “aguantando a la fuerza”, no conviene apretar más.' },
+  { k: 'supervisado', c: 'var(--cyan)', n: 'Aprendizaje supervisado', q: '¿La persona ignorará esta pausa?', r: 'AUC 0.745', big: 'AUC 0.745',
+    p: 'Aprendió de 27 442 pausas y se probó con 50 personas que nunca vio. Lo que más pesa: los minutos que ya lleva en la app.',
+    viz: () => bars([['Regresión logística', 74.5, '0.745'], ['Árbol de decisión', 72.6, '0.726', true], ['Al azar', 50, '0.500', true]], 100),
+    say: 'Aprendió solo que las pausas de noche se ignoran más.' },
+  { k: 'neuronal', c: 'var(--violet)', n: 'Red neuronal', q: '¿Cuántos minutos usará mañana?', r: 'Error de 28.6 min', big: '28.6 min de error',
+    p: 'Pronostica el uso de mañana con 13 % de error relativo, mejor que cualquier regla simple. Menos error es mejor.',
+    viz: () => bars([['Red neuronal', 28.6, '28.6 min'], ['“Igual que ayer”', 36.8, '36.8 min', true], ['Promedio de 7 días', 40.4, '40.4 min', true], ['Mismo día, semana pasada', 46.1, '46.1 min', true]], 50),
+    say: 'Mientras menos error, mejor: la red gana a todas las reglas simples.' },
+  { k: 'genetico', c: 'var(--green)', n: 'Algoritmo genético', q: '¿A qué horas conviene poner las pausas?', r: '3× más ahorro', big: '3× más minutos ahorrados',
+    p: 'Busca entre 2.8 × 10¹⁴ horarios posibles y evita las horas en que las pausas se ignoran, como la noche.',
+    viz: () => bars([['Horario con IA', 25.7, '25.7 min'], ['Horario hecho a mano', 8.5, '8.5 min', true]], 30),
+    say: 'De noche casi todas las pausas se ignoran, así que el genético las mueve.' },
+  { k: 'astar', c: 'var(--teal)', n: 'Búsqueda A*', q: '¿Qué ruta semanal lleva a la meta?', r: '300 → 120 min', big: '300 → 120 min en 8 semanas',
+    p: 'Encuentra la ruta óptima de recortes semanales: llega pronto a la meta sin recortes bruscos.',
+    viz: () => route(), say: 'Recortes de 10 % por semana: firme, pero sin brusquedad.' },
+  { k: 'logistica', c: 'var(--red)', n: 'Regresión logística', q: '¿Qué tan probable es una recaída?', r: 'AUC 0.848', big: 'AUC 0.848',
+    p: 'Detecta 76 % de las recaídas: prefiere avisar de más que dejar pasar una. Mueve los controles y mira la aguja.',
+    viz: null, say: 'Mueve los controles y mira mi cara: el cumplimiento es lo que más pesa.' }
+];
+const techsEl = document.getElementById('techs'), aiViz = document.getElementById('aiViz'), aiPanel = document.getElementById('aipanel'), riskBlock = document.getElementById('riskBlock');
+let curTech = 'difusa';
+TECH.forEach(t => {
+  const b = document.createElement('button'); b.className = 'tech'; b.dataset.k = t.k; b.style.setProperty('--c', t.c);
+  b.innerHTML = `<b>${t.n}</b><span>${t.r}</span><small>${t.q}</small>`;
+  b.onclick = () => { showTech(t.k); react(t.k === 'logistica' ? 'serio' : 'tranquilo', t.say); };
+  techsEl.appendChild(b);
+});
+function bars(rows, max) {
+  aiViz.innerHTML = rows.map(([l, v, txt, dim]) => `<div class="bar${dim ? ' dim' : ''}"><span>${l}</span><div class="t"><div class="f" data-w="${(v / max * 100).toFixed(1)}"></div></div><b>${txt}</b></div>`).join('');
+  aiViz.querySelectorAll('.f').forEach(f => setTimeout(() => f.style.width = f.dataset.w + '%', 60));
+}
+function route() {
+  const vals = [300]; for (let i = 0; i < 7; i++) vals.push(vals[i] * .9); vals.push(vals[7] * .85);
+  const W = 520, H = 170, x = i => 30 + i * (W - 50) / 8, y = v => 14 + (320 - v) / 220 * (H - 40);
+  const d = vals.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join('');
+  aiViz.innerHTML = `<svg viewBox="0 0 ${W} ${H + 10}" role="img" aria-label="Ruta de 300 a 120 minutos en 8 semanas">
+    <line x1="30" y1="${y(120)}" x2="${W - 20}" y2="${y(120)}" stroke="#5ee0b0" stroke-dasharray="4 6" opacity=".7"/>
+    <text x="${W - 20}" y="${y(120) - 6}" text-anchor="end" font-size="11" font-weight="700" fill="#5ee0b0" font-family="Inter">Meta: 120 min</text>
+    <path d="${d}" fill="none" stroke="#67e8f9" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" style="filter:drop-shadow(0 0 6px #67e8f9);transition:stroke-dashoffset 1.6s ease" id="routeLine"/>
+    ${vals.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="4.5" fill="#0f172a" stroke="#67e8f9" stroke-width="2"/><text x="${x(i)}" y="${H + 8}" text-anchor="middle" font-size="10.5" fill="#94a3b8" font-family="Inter">${i ? 'S' + i : 'Hoy'}</text>`).join('')}
+    <text x="${x(0) + 8}" y="${y(300) - 4}" font-size="11" font-weight="700" fill="#f1f5f9" font-family="Inter">300 min</text>
+  </svg>`;
+  setTimeout(() => { const l = document.getElementById('routeLine'); if (l) l.style.strokeDashoffset = '0'; }, 60);
+}
+function showTech(k) {
+  const t = TECH.find(x => x.k === k); curTech = k;
+  techsEl.querySelectorAll('.tech').forEach(b => b.classList.toggle('on', b.dataset.k === k));
+  aiPanel.style.setProperty('--c', t.c);
+  document.getElementById('aiTag').textContent = t.n;
+  document.getElementById('aiQ').textContent = t.q;
+  document.getElementById('aiBig').textContent = t.big;
+  document.getElementById('aiP').textContent = t.p;
+  riskBlock.hidden = !!t.viz; aiViz.hidden = !t.viz;
+  if (t.viz) t.viz(); else risk();
+  aiPanel.animate([{ opacity: .4, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], { duration: 320 });
+}
+showTech('difusa');
 
 /* Inicio */
 const start = parseInt(location.hash.slice(1), 10);
