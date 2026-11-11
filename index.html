@@ -888,7 +888,7 @@ const NODES = {
   api: { c: 'var(--cyan)', t: 'Backend FastAPI', li: ['FastAPI ≥0.115 en Python 3.12, sobre Azure App Service.', 'Autenticación JWT, persistencia y motor de riesgo de recaída.'] },
   sql: { c: 'var(--violet)', t: 'Azure SQL Serverless', li: ['General Purpose, Gen5, 2 vCores.', 'Almacenamiento relacional de cuentas, métricas y planes.'] },
   claude: { c: 'var(--teal)', t: 'API de Claude', li: ['Servicio de apoyo: explica el plan con la voz de Foqui.'] },
-  func: { c: 'var(--teal)', t: 'Azure Functions', li: ['Python 3.11. Calcula el ajuste semanal por una ruta independiente del backend.'] },
+  func: { c: 'var(--teal)', t: 'Azure Functions', li: ['Python 3.11. Calcula el ajuste semanal e intercambia datos con el backend.'] },
   blob: { c: 'var(--teal)', t: 'Blob Storage', li: ['Servicio de apoyo: guarda las fotos de perfil.'] },
   swa: { c: 'var(--teal)', t: 'Static Web Apps', li: ['Entrega estática: sirve el portal web.'] }
 };
@@ -905,7 +905,7 @@ showNode('api');
 function drawLines() {
   const box = id => { const e = document.getElementById('n-' + id); return { l: e.offsetLeft, t: e.offsetTop, r: e.offsetLeft + e.offsetWidth, b: e.offsetTop + e.offsetHeight, cy: e.offsetTop + e.offsetHeight / 2, cx: e.offsetLeft + e.offsetWidth / 2 }; };
   const cv = (x1, y1, x2, y2, o = 0) => { const m = (x1 + x2) / 2 + o; return `M${x1} ${y1} C${m} ${y1} ${m} ${y2} ${x2} ${y2}`; };
-  const A = box('api'), and = box('android'), web = box('web'), sql = box('sql'), cl = box('claude'), bl = box('blob'), sw = box('swa');
+  const A = box('api'), and = box('android'), web = box('web'), sql = box('sql'), cl = box('claude'), bl = box('blob'), sw = box('swa'), fn = box('func');
   const COL = { a: '#f59e0b', g: '#5ee0b0', v: '#c4b5fd', t: '#67e8f9' };
   const mk = Object.entries(COL).map(([k, c]) => `<marker id="ar-${k}" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="${c}"/></marker>`).join('');
   const pulse = (d, k, delay = 0) => `<path d="${d}" stroke="#fff" stroke-width="3.2" class="pulse" style="animation-delay:${delay}s;filter:drop-shadow(0 0 3px ${COL[k]}) drop-shadow(0 0 8px ${COL[k]})"/>`;
@@ -921,6 +921,7 @@ function drawLines() {
       ${main(p1, 'a')}${main(p3, 'a')}
       ${main(p2, 'g')}${main(p3b, 'g')}
       ${main(`M${A.r + 2} ${sqY} H ${sql.l - 2}`, 'v', true, `M${sql.l - 2} ${sqY} H ${A.r + 2}`)}
+      ${main(cv(A.r, A.b - 12, fn.l, fn.cy), 't', true, cv(fn.l, fn.cy, A.r, A.b - 12))}
       ${sup(`M${A.cx} ${A.t} V ${cl.b + 2}`)}
       ${sup(cv(A.r, A.t + 10, bl.l, bl.cy))}
       ${sup(cv(sw.l, sw.cy, web.r, web.b - 8))}
