@@ -245,7 +245,7 @@ kbd { font-family: inherit; font-size: 12px; font-weight: 700; padding: 3px 8px;
 .node.small { width: 150px; padding: 9px 12px; border-style: dashed; }
 .node.small b { font-size: 13.5px; }
 .azbox { position: absolute; left: 204px; top: 84px; right: 10px; height: 306px; border: 1.5px dashed rgba(92,203,250,.45); border-radius: 16px; background: rgba(92,203,250,.035); }
-.cloud { position: absolute; left: 14px; top: 9px; font-size: 11px; font-weight: 800; letter-spacing: .14em; color: var(--cyan); text-shadow: 0 0 8px var(--cyan); }
+.cloud { position: absolute; right: 14px; top: 9px; font-size: 11px; font-weight: 800; letter-spacing: .14em; color: var(--cyan); text-shadow: 0 0 8px var(--cyan); }
 .detail h3 { font-size: 24px; color: var(--c); text-shadow: 0 0 12px color-mix(in srgb, var(--c) 60%, transparent); }
 .detail .sub { font-size: 14px; font-weight: 600; color: var(--text-3); margin-bottom: 14px; }
 .detail ul { list-style: none; display: grid; gap: 10px; }
@@ -519,7 +519,7 @@ input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 
         <button class="node" data-n="android" id="n-android" style="--c:var(--amber); left:14px; top:92px; width:136px"><b>App Android</b><span>Kotlin + Compose</span></button>
         <button class="node" data-n="web" id="n-web" style="--c:var(--green); left:14px; top:290px; width:136px"><b>Portal web</b><span>React + Vite</span></button>
         <button class="node on" data-n="api" id="n-api" style="--c:var(--cyan); left:236px; top:184px; width:142px"><b>API FastAPI</b><span>Azure App Service</span></button>
-        <button class="node small" data-n="blob" id="n-blob" style="--c:var(--teal); left:432px; top:106px; width:134px"><b>Blob Storage</b><span>Fotos de perfil</span></button>
+        <button class="node small" data-n="blob" id="n-blob" style="--c:var(--teal); left:432px; top:114px; width:134px"><b>Blob Storage</b><span>Fotos de perfil</span></button>
         <button class="node" data-n="sql" id="n-sql" style="--c:var(--violet); left:432px; top:188px; width:134px"><b>Azure SQL</b><span>Base de datos</span></button>
         <button class="node small" data-n="func" id="n-func" style="--c:var(--teal); left:432px; top:306px; width:134px"><b>Azure Functions</b><span>Ajuste semanal</span></button>
         <button class="node small" data-n="swa" id="n-swa" style="--c:var(--teal); left:236px; top:316px; width:142px"><b>Static Web Apps</b><span>Sirve el portal</span></button>
@@ -909,8 +909,8 @@ function drawLines() {
   const COL = { a: '#f59e0b', g: '#5ee0b0', v: '#c4b5fd', t: '#67e8f9' };
   const mk = Object.entries(COL).map(([k, c]) => `<marker id="ar-${k}" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="${c}"/></marker>`).join('');
   const pulse = (d, k, delay = 0) => `<path d="${d}" stroke="#fff" stroke-width="3.2" class="pulse" style="animation-delay:${delay}s;filter:drop-shadow(0 0 3px ${COL[k]}) drop-shadow(0 0 8px ${COL[k]})"/>`;
-  const main = (d, k, both, rev) => `<path d="${d}" stroke="${COL[k]}" stroke-width="2.2" opacity=".75" marker-end="url(#ar-${k})" ${both ? `marker-start="url(#ar-${k})"` : ''} style="filter:drop-shadow(0 0 4px ${COL[k]})"/>${pulse(d, k)}${rev ? pulse(rev, k, -.7) : ''}`;
-  const sup = (d) => `<path d="${d}" stroke="${COL.t}" stroke-width="1.6" stroke-dasharray="4 5" opacity=".85" marker-end="url(#ar-t)" class="flow-s"/>`;
+  const main = (d, k, both, rev) => `<path d="${d}" stroke="${COL[k]}" stroke-width="2.2" opacity=".75" data-l="1" style="filter:drop-shadow(0 0 4px ${COL[k]})"/>${pulse(d, k)}${rev ? pulse(rev, k, -.7) : ''}`;
+  const sup = (d) => `<path d="${d}" stroke="${COL.t}" stroke-width="1.6" stroke-dasharray="4 5" opacity=".85" data-l="1" class="flow-s"/>`;
   const badge = (x, y, n) => `<g><circle cx="${x}" cy="${y}" r="8.5" fill="#f59e0b" style="filter:drop-shadow(0 0 5px #f59e0b)"/><text x="${x}" y="${y + 3.6}" text-anchor="middle" font-size="10.5" font-weight="800" fill="#0b1322">${n}</text></g>`;
   // 1 · App → backend, 3 · backend → App (y lo mismo con el portal)
   const p1 = cv(and.r, and.cy - 12, A.l, A.t + 9, 13), p3 = cv(A.l, A.t + 24, and.r, and.cy + 14, -13);
@@ -929,7 +929,7 @@ function drawLines() {
       ${badge((A.r + sql.l) / 2, sqY - 16, 4)}
     </g>
     <text x="${(sw.l + web.r) / 2 - 4}" y="${sw.b + 4}" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="700" fill="#94a3b8">entrega estática</text>`;
-  const svg = document.getElementById('lines'), ps = svg.querySelectorAll('g[fill=none] > path[marker-end]');
+  const svg = document.getElementById('lines'), ps = svg.querySelectorAll('g[fill=none] > path[data-l]');
   [[0, 1, .5], [1, 3, .5], [2, 2, .5], [3, 3, .5]].forEach(([i, n, f]) => { const el = ps[i]; if (!el) return; const pt = el.getPointAtLength(el.getTotalLength() * f); svg.querySelector('#badges').insertAdjacentHTML('beforeend', badge(pt.x, pt.y, n)); });
 }
 drawLines(); document.fonts && document.fonts.ready.then(drawLines);
