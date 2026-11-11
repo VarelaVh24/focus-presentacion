@@ -668,7 +668,8 @@ function frame(now) {
     st.root.setAttribute('transform', `rotate(${st.tilt.toFixed(2)} 60 108)`);
     /* Mirada: sigue al mouse si se movió hace poco; si no, mira a donde le toque */
     let tx = 0, ty = 0;
-    if (now - mouse.t < 2500 || !st.lookTarget) {
+    if (st.svg.id === 'endFoqui') { tx = 0; ty = 0; }
+    else if (now - mouse.t < 2500 || !st.lookTarget) {
       const r = st.svg.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height * .47;
       const dx = mouse.x - cx, dy = mouse.y - cy, d = Math.hypot(dx, dy) || 1, m = mouse.t > 0 ? Math.min(1, d / 300) * 3.2 : 0;
       tx = dx / d * m; ty = dy / d * m;
