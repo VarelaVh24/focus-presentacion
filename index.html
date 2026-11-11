@@ -416,7 +416,7 @@ input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 
   </section>
 
   <!-- 2 · El problema y la oportunidad -->
-  <section class="slide" data-foqui="serio" data-glow="red" data-say="Toca cada mecanismo. Las apps compiten por tu atención con trucos muy bien conocidos.">
+  <section class="slide" data-foqui="tranquilo" data-glow="red" data-say="Toca cada mecanismo. Las apps compiten por tu atención con trucos muy bien conocidos.">
     <div class="eyebrow" style="--c:var(--red)">01 · El problema</div>
     <p class="quote" style="font-size:30px">El problema no es el teléfono, sino el uso que <span class="neon">deja de ser una decisión</span>: abrir una app por inercia y notar media hora después que el tiempo ya pasó.</p>
     <div class="mech" id="mech">
@@ -828,7 +828,7 @@ function onEnter(s) {
 /* ---------- 3 · Mecanismos y pestañas ---------- */
 document.querySelectorAll('#mech .chip').forEach(c => c.onclick = () => {
   document.querySelectorAll('#mech .chip').forEach(x => x.classList.toggle('on', x === c));
-  react('enojado', c.dataset.m, 'shake');
+  react('tranquilo', c.dataset.m, 'hop');
 });
 document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => {
   b.parentElement.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
