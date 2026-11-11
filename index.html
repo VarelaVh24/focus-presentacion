@@ -40,8 +40,34 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 /* Escenario 16:9 */
 #viewport { position: fixed; inset: 0; display: grid; place-items: center; }
 #stage { width: 1280px; height: 720px; position: relative; transform-origin: center; flex: none; }
-.slide { position: absolute; inset: 0; padding: 52px 72px 88px; display: flex; flex-direction: column; opacity: 0; visibility: hidden; transform: scale(.97) translateY(14px); filter: blur(6px); transition: opacity .55s ease, transform .55s ease, filter .55s ease, visibility .55s; }
-.slide.active { opacity: 1; visibility: visible; transform: none; filter: none; }
+.slide { position: absolute; inset: 0; padding: 52px 72px 88px; display: flex; flex-direction: column; opacity: 0; visibility: hidden; }
+.slide.active { opacity: 1; visibility: visible; z-index: 2; }
+.slide.leave-f, .slide.leave-b { opacity: 1; visibility: visible; z-index: 1; }
+.slide.leave-f { animation: leaveF .8s cubic-bezier(.7,0,.2,1) both; }
+.slide.leave-b { animation: leaveB .8s cubic-bezier(.7,0,.2,1) both; }
+@keyframes leaveF { from { clip-path: inset(0 0 0 0); } to { clip-path: inset(0 100% 0 0); } }
+@keyframes leaveB { from { clip-path: inset(0 0 0 0); } to { clip-path: inset(0 0 0 100%); } }
+/* Transición: un barrido de luz neón descubre la diapositiva y el contenido entra escalonado */
+.slide.enter-f { animation: revealF .8s cubic-bezier(.7,0,.2,1) both; }
+.slide.enter-b { animation: revealB .8s cubic-bezier(.7,0,.2,1) both; }
+@keyframes revealF { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0 0 0 0); } }
+@keyframes revealB { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+.slide.enter-f > *:not(.bob):not(.flicker), .slide.enter-b > *:not(.bob):not(.flicker) { animation: rise .6s cubic-bezier(.2,.8,.2,1) both; }
+.slide.enter-b > * { --dx: -26px; }
+.slide > *:nth-child(1) { animation-delay: .3s !important; }
+.slide > *:nth-child(2) { animation-delay: .38s !important; }
+.slide > *:nth-child(3) { animation-delay: .46s !important; }
+.slide > *:nth-child(4) { animation-delay: .54s !important; }
+.slide > *:nth-child(5) { animation-delay: .62s !important; }
+.slide > *:nth-child(n+6) { animation-delay: .7s !important; }
+@keyframes rise { from { opacity: 0; transform: translateX(var(--dx, 26px)); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+#sweep { position: absolute; top: 0; bottom: 0; left: 0; width: 3px; z-index: 9; pointer-events: none; opacity: 0; background: linear-gradient(var(--amber-2), var(--cyan)); box-shadow: 0 0 14px var(--amber), 0 0 40px var(--amber), 0 0 80px rgba(92,203,250,.6); }
+#sweep::after { content: ""; position: absolute; top: 0; bottom: 0; right: 3px; width: 160px; background: linear-gradient(90deg, transparent, rgba(245,158,11,.14)); }
+#sweep.go-b::after { right: auto; left: 3px; background: linear-gradient(270deg, transparent, rgba(92,203,250,.14)); }
+#sweep.go-f { animation: sweepF .8s cubic-bezier(.7,0,.2,1) both; }
+#sweep.go-b { animation: sweepB .8s cubic-bezier(.7,0,.2,1) both; }
+@keyframes sweepF { 0% { left: 100%; opacity: 1; } 90% { opacity: 1; } 100% { left: 0; opacity: 0; } }
+@keyframes sweepB { 0% { left: 0; opacity: 1; } 90% { opacity: 1; } 100% { left: 100%; opacity: 0; } }
 
 /* Tipografía neón */
 .eyebrow { font-size: 13px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--c, var(--amber-2)); text-shadow: 0 0 10px var(--c, var(--amber)); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
@@ -356,8 +382,10 @@ input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 
 #count { font-size: 13px; font-weight: 700; color: var(--text-3); font-variant-numeric: tabular-nums; min-width: 48px; text-align: center; }
 #progress { position: absolute; left: 0; top: 0; height: 3px; background: linear-gradient(90deg, var(--amber), var(--amber-2)); box-shadow: 0 0 12px var(--amber); transition: width .5s ease; z-index: 7; }
 
+/* Con "reducir movimiento" solo se calma el fondo decorativo; la transición y Foqui se mantienen porque son parte de la presentación */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+  #bgfx .grid, #bgfx i, .flicker { animation: none !important; }
+  #bgfx i { display: none; }
 }
 </style>
 </head>
@@ -366,6 +394,7 @@ input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 
 <div id="viewport">
 <div id="stage">
   <div id="progress"></div>
+  <div id="sweep"></div>
 
   <!-- 1 · Portada -->
   <section class="slide cover" data-foqui="tranquilo" data-glow="amber">
@@ -730,6 +759,14 @@ function react(expr, text, move = 'hop') { lastReact = performance.now(); drawFo
 
 function go(i) {
   i = Math.max(0, Math.min(slides.length - 1, i));
+  const dir = i >= cur ? 'f' : 'b';
+  if (i !== cur || !slides[i].classList.contains('active')) {
+    slides.forEach(s => s.classList.remove('enter-f', 'enter-b', 'leave-f', 'leave-b'));
+    const prev = slides[cur];
+    if (prev && prev !== slides[i] && prev.classList.contains('active')) { prev.classList.add('leave-' + dir); clearTimeout(prev._lt); prev._lt = setTimeout(() => prev.classList.remove('leave-f', 'leave-b'), 820); }
+    void slides[i].offsetWidth; slides[i].classList.add('enter-' + dir);
+    const sw = document.getElementById('sweep'); sw.className = ''; void sw.offsetWidth; sw.className = 'go-' + dir;
+  }
   slides.forEach((s, k) => s.classList.toggle('active', k === i));
   [...dots.children].forEach((d, k) => d.classList.toggle('on', k === i));
   document.getElementById('count').textContent = `${i + 1} / ${slides.length}`;
